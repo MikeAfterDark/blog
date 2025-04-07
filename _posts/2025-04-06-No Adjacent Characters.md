@@ -1,5 +1,3 @@
-# Title
-
 <!-- TODO: make repo, add hardware info, always test on linux -->
 
 > [!NOTE]
