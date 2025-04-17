@@ -36,7 +36,7 @@ It's foolproof! The first thing I think of is _obviously_ the best solution, but
 <details>
     <summary>Pseudocode: Simpleton's Thicc Array</summary>
     
-```
+<pre><code>
 while (!valid_list) {
     if (curr_char == next_char) {
         try swap next_char with non-matching char ahead in the list
@@ -47,7 +47,7 @@ while (!valid_list) {
     }
     curr_char = next_char
 }
-```
+<pre><code>
 
 </details>
 
@@ -70,33 +70,53 @@ A hashmap would do the trick, O(n, n), still ain't great but its simple and can 
 <details>
     <summary>Pseudocode: Simpleton's Counter</summary>
 
-```
+<pre><code>
 count quantity of elements into a hashmap
 sort based on count
-if (largest_quantity > string_length/2 + 1) {
+if (largest_quantity &gt; string_length/2 + 1) {
     no valid_list is possible
 }
 
 new_string = alternate values from hashmap
-```
+<pre><code>
 
 </details>
-
+  
 ---
 **ASIDE**
 
 For testing data I went with the following: 
 
-- Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% valid list rate
-- Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% valid list rate
-- Character limit testing: N characters, N/2 unique characters, ~100.000% valid list rate
+- Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% possible valid list rate
+- Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
+- Character limit testing: N characters, 500 unique characters, ~100.000% possible valid list rate
+
+---
+  
+<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
+<img class="chart" data-name="2_chars" />  
+<img class="chart" data-name="3_chars" />  
+<img class="chart" data-name="500_chars" />  
 
 ---
 
-<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>
-<img class="chart" data-name="2_chars" />
-<img class="chart" data-name="3_chars" />
-<img class="chart" data-name="500_chars" />
+## Hardware info: 
+
+**CPU:**  
+Model name: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz  
+Thread(s) per core: 2  
+Core(s) per socket: 6  
+CPU max MHz: 4500.0000  
+CPU min MHz: 800.0000  
+
+**RAM:**  
+	Size: 16 GB  
+	Speed: 3200 MT/s  
+	Configured Memory Speed: 3200 MT/s  
+	Volatile Size: 16 GB  
+
+**SSD:** WD Blue SN570 2TB  
+**OS:** Linux Mint 21.3 (6.8.0-52-generic)  
 
 <script>
 function applyTheme(mode) {
@@ -122,22 +142,3 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(saved);
 });
 </script>
-
-
-## Hardware info: 
-
-CPU:
-Model name:                           11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
-Thread(s) per core:                   2
-Core(s) per socket:                   6
-CPU max MHz:                          4500.0000
-CPU min MHz:                          800.0000
-
-RAM:
-	Size: 16 GB
-	Speed: 3200 MT/s
-	Configured Memory Speed: 3200 MT/s
-	Volatile Size: 16 GB
-
-SSD: WD Blue SN570 2TB
-OS: Linux Mint 21.3 (6.8.0-52-generic)
