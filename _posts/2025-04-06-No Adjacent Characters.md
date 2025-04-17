@@ -132,13 +132,13 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 > "But what do you mean sort? What sorting function are you using? can you elaborate??"
 
-(I wasn't sure if my mic wasn't picking up or if it was a missunderstanding)
+*I wasn't sure if my mic wasn't picking up or if it was a missunderstanding*
 
 "Its likely going to be using some sort of quick-sort or radix-sort? I could quickly look up which one its using in this specific C# `HashSet<T>` context if you'd like. Just to be clear I'm sorting the char counts so they're ints with an O(n log n) or O(nk). Or would you like me to implement a sorting algorithm? I haven't looked at them in years so I can only promise to implement bubble-sort without looking things up"
 
 > "Yes, yes, elaborate"
 
-(I'm at my wits end because I'm pretty sure there was an OR in my reply)
+*I'm at my wits end because I'm pretty sure there was an OR in my reply*
 
 "Ok, so I'll start writing bubble-sort for sorting the counts of each character in the HashSet, alright?"
 
@@ -148,13 +148,13 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 > "No, no. Now's not the time to look things up 😊"
 
-(I'm starting to boil at this point, this is the last question they ask of me so I check the time and there are 20 minutes left out of the 30 minutes assigned for this question)
+*I'm starting to boil at this point, this is the last question they ask of me so I check the time and there are 20 minutes left out of the 30 minutes assigned for this question*
 
 "Would you be able to give me a quick rundown on what it is? I might be able to connect some dots"
 
 > "... No. (mumbles) Lets see... the solution I have is with a max-heap, but... is there any other way to do it without one...?"
 
-This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" that I don't know what a max heap is, and I kept repeating that I'll take some time to read up on it after the interview. Once that shitfest was over I look it up and LO-AND-BEHOLD:
+*This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" that I don't know what a max heap is, and I kept repeating that I'll take some time to read up on it after the interview. Once that shitfest was over I look it up and LO-AND-BEHOLD:*
 
 > [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
 
@@ -168,14 +168,15 @@ So thats when I decided to write this post out of spite. Lets see how good your 
 
 ### 3. Max Heap my Ass
 
-Since I have no idea how they implemented their solution, whatever I manage to code up could perform worse than theirs but it seems like it will similar to my [2nd solution](#simpleton-counter) where the max-heap takes place of the HashMap and the sorting.
+Since I have no idea how they implemented their solution, whatever I manage to code up could perform worse than theirs but it seems like it will similar to my [2nd solution](#simpleton-counter) where the max-heap takes place of the sorting.
 
 <details>
     <summary>Code</summary>
 
 <p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs" target="_blank">Link to real code</a></p>
 
-<pre><code>count quantity of elements into a maxheap
+<pre><code>count quantity of elements into a hashmap
+insert counts and keys into maxheap
 if (largest_quantity &gt; string_length/2 + 1) {
     no valid_list is possible
 }
@@ -183,6 +184,22 @@ if (largest_quantity &gt; string_length/2 + 1) {
 new_string = alternate values from maxheap
 </code></pre>
 </details>
+
+<br> 
+
+---
+
+<br>
+
+<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
+<img class="chart" data-name="comparing_algos_2_3_with_2_chars" />  
+<br>
+<img class="chart" data-name="comparing_algos_2_3_with_3_chars" />  
+<br>
+<img class="chart" data-name="comparing_algos_2_3_with_500_chars" />  
+<br>
+
+
 
 ---
 
