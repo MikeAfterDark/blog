@@ -47,8 +47,7 @@ while (!valid_list) {
     }
     curr_char = next_char
 }
-<pre><code>
-
+</code></pre>
 </details>
 
 Lets try think of something better...
@@ -78,7 +77,7 @@ if (largest_quantity &gt; string_length/2 + 1) {
 }
 
 new_string = alternate values from hashmap
-<pre><code>
+</code></pre>
 
 </details>
   
