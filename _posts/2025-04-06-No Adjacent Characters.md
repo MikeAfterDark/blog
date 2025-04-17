@@ -10,7 +10,6 @@ I've recently had the pleasure to interview with a company that rhymes with gala
 
 Short and sweet, I was feeling confident, I had a pre-interview medium leetcode to warm up, should be ez:
 
-<br> 
 
 ---
 
@@ -58,7 +57,9 @@ It's foolproof! The first thing I think of is _obviously_ the best solution /s. 
 Lets try think of something better...
 
 <br> 
+
 ---
+
 <br>
 
 ### 2. Simpleton's Counter
@@ -90,8 +91,8 @@ new_string = alternate values from hashmap
 
 </details>
 
-<br> 
 ---
+
 <br>
 
 **ASIDE**
@@ -101,13 +102,15 @@ For testing data I went with the following:
 - Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% possible valid list rate
 - Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
 - Character limit testing: N characters, 500 unique characters, ~100.000% possible valid list rate
+
 <br> 
+
 ---
+
 <br>
 
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
-<br>
 <img class="chart" data-name="2_chars" />  
 <br>
 <img class="chart" data-name="3_chars" />  
@@ -129,7 +132,7 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 (I wasn't sure if my mic wasn't picking up or if it was a missunderstanding)
 
-"Its likely going to be using some sort of quick-sort or radix-sort? I could quickly look up which specific one its using in this specific C# HashSet<T> context if you'd like. Just to be clear I'm sorting the char counts so they're ints with an O(n log n) or O(nk). Or would you like me to implement a sorting algorithm? I haven't looked at them in years so I can only promise to implement bubble-sort without looking things up"
+"Its likely going to be using some sort of quick-sort or radix-sort? I could quickly look up which one its using in this specific C# `HashSet<T>` context if you'd like. Just to be clear I'm sorting the char counts so they're ints with an O(n log n) or O(nk). Or would you like me to implement a sorting algorithm? I haven't looked at them in years so I can only promise to implement bubble-sort without looking things up"
 
 > "Yes, yes, elaborate"
 
@@ -153,15 +156,17 @@ This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" 
 
 > [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
 
-Overall I'm extremely upset at the interviewer. There was plenty of time to find that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not. So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
+Overall I'm extremely upset at the interviewer. There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not.
 
-<br> 
+So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
+
 ---
+
 <br>
 
 ### 3. Max Heap my Ass
 
-So I have no idea how they implemented their solution so whatever I manage to code up could perform worse than theirs, but it seems like it will similar to my [2nd solution](#2.-simpleton's-counter) where the max-heap takes place of the HashMap and the sorting.
+Since I have no idea how they implemented their solution, whatever I manage to code up could perform worse than theirs but it seems like it will similar to my [2nd solution](#2.-simpleton's-counter) where the max-heap takes place of the HashMap and the sorting.
 
 <details>
     <summary>Code</summary>
@@ -176,8 +181,8 @@ new_string = alternate values from maxheap
 </code></pre>
 </details>
 
-<br>
 ---
+
 <br>
 
 ## Hardware info: 
