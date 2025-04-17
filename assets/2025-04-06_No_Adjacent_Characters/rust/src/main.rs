@@ -2,6 +2,7 @@ mod utility;
 
 mod a1_simpletons_array;
 mod a2_simpletons_counter;
+mod a3_max_heap_my_ass;
 
 use clap::{ArgGroup, Parser};
 use core::panic;
@@ -54,6 +55,7 @@ type AlgoFn = fn(&[u128]) -> Vec<u128>;
 const RUNNERS: &[AlgoFn] = &[
     a1_simpletons_array::run,
     a2_simpletons_counter::run,
+    a3_max_heap_my_ass::run,
 ];
 
 #[derive(Debug, Clone)]

@@ -1,18 +1,20 @@
 <!-- TODO: make repo, add hardware info, always test on linux -->
 
 
-> [!NOTE]
-> All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://google.ca)
+> All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://github.com/MikeAfterDark/blog/tree/main/assets/2025-04-06_No_Adjacent_Characters/rust)
 
-So recently I've had the pleasure of going through a set of interviews with a company that rhymes with galazon, also known as the company who tried to get people with really good eyesight to stare at pixels to see if people from the other side of the world are buying a '2gal oat milk' or a '2gal soy milk', then charge their registered digital wallets for whichever they think it was, and one of the briliant questions I was asked to answer went something like this:
+I've recently had the pleasure to interview with a company that rhymes with galazon, also known as the company who tried to get people with really good eyesight to guess what items people picked up from [a store with no cashiers](https://www.cnn.com/2024/04/03/business/amazons-self-checkout-technology-grocery-flop/index.html), and one of the briliant questions went something like this:
 
 > "Given a string, return a new string in which no two adjacent characters are the same."
+> Ex: xyzzz ➡ zxzyz
 
-Ex: `xyzzz -> zxzyz`
+Short and sweet, I was feeling confident, I had a pre-interview medium leetcode to warm up, should be ez:
 
-I like it, a short and sweet problem with nothing serious going on, lets think of solutions:
+<br>---<br>
 
-### 1. The Simpleton's Thicc Array
+### 1. Simpleton's Thicc Array
+
+To appease the interviewer, I had an answer within 20 seconds of reading the question, slightly inspired by my uni's combinatorics class:
 
 ```
 xyzzz
@@ -31,13 +33,13 @@ zxxyxzz
 |-> x z y x z x z _ _ _ _ _ _ _ _
 ```
 
-It's foolproof! The first thing I think of is _obviously_ the best solution, but wait, the interviewer is looking at me like I just bought 2gal of soy milk, so something must be up and its not updog. Hmmm, it's O(n) runtime and... O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
+It's foolproof! The first thing I think of is _obviously_ the best solution /s. I mentioned that it seemed like O(n) runtime [Spoiler: it wasn't] and O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
 
 <details>
     <summary>Pseudocode: Simpleton's Thicc Array</summary>
-    
-<pre><code>
-while (!valid_list) {
+
+(Link to real code)[https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a1_simpletons_array.rs]
+<pre><code>while (!valid_list) {
     if (curr_char == next_char) {
         try swap next_char with non-matching char ahead in the list
         else
@@ -46,13 +48,14 @@ while (!valid_list) {
         no valid_list is possible
     }
     curr_char = next_char
-}
-</code></pre>
+}</code></pre>
 </details>
 
 Lets try think of something better...
 
-### 2. The Simpleton's Counter
+<br>---<br>
+
+### 2. Simpleton's Counter
 
 ```
 
@@ -67,10 +70,10 @@ xyzzz
 A hashmap would do the trick, O(n, n), still ain't great but its simple and can use basic stdlib implementations of hashmap and sorting so no issues there. Lets try it out and see how it goes (lets do both for the heck of it)
 
 <details>
-    <summary>Pseudocode: Simpleton's Counter</summary>
+    <summary>Code</summary>
 
-<pre><code>
-count quantity of elements into a hashmap
+(Link to real code)[https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a2_simpletons_counter.rs]
+<pre><code>count quantity of elements into a hashmap
 sort based on count
 if (largest_quantity &gt; string_length/2 + 1) {
     no valid_list is possible
@@ -80,8 +83,8 @@ new_string = alternate values from hashmap
 </code></pre>
 
 </details>
-  
----
+
+<br>---<br>
 **ASIDE**
 
 For testing data I went with the following: 
@@ -89,15 +92,77 @@ For testing data I went with the following:
 - Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% possible valid list rate
 - Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
 - Character limit testing: N characters, 500 unique characters, ~100.000% possible valid list rate
+<br>---<br> 
 
----
-  
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
+<br>
 <img class="chart" data-name="2_chars" />  
+<br>
 <img class="chart" data-name="3_chars" />  
+<br>
 <img class="chart" data-name="500_chars" />  
+<br>
 
----
+> Now we can clearly see the [simpleton's array](#1.-simpleton's-thicc-array) having a O(n^2, n) complexity while [simpleton's counter](#2.-simpleton's-counter) has a nice O(n, n)
+
+Having implemented my solution in bastardized C# pseudocode for the interviewer, I was pretty happy and ready to move on. Then it all started falling apart when the interviewer unmuted
+
+### [Great Expectations](https://www.youtube.com/watch?v=O5QIGFKAHgk) (venting):
+
+> "So you wrote a `hashmap.sort()`, can you elaborate on that?"
+
+"Yea of course, I'd use a standard library hashmap and they all have some kind of sorting method already implemented so that's what I'm using, probably O(n log n)"
+
+> "But what do you mean sort? What sorting function are you using? can you elaborate??"
+
+(I wasn't sure if my mic wasn't picking up or if it was a missunderstanding)
+
+"Its likely going to be using some sort of quick-sort or radix-sort? I could quickly look up which specific one its using in this specific C# HashSet<T> context if you'd like. Just to be clear I'm sorting the char counts so they're ints with an O(n log n) or O(nk). Or would you like me to implement a sorting algorithm? I haven't looked at them in years so I can only promise to implement bubble-sort without looking things up"
+
+> "Yes, yes, elaborate"
+
+(I'm at my wits end because I'm pretty sure there was an OR in my reply)
+
+"Ok, so I'll start writing bubble-sort for sorting the counts of each character in the HashSet, alright?"
+
+> "No! No! no. Just... uhh, do you know about max-heap?"
+
+"Nope, first time I'm hearing about those, I could try see if I can figure it out in a few minutes if you'd like?"
+
+> "No, no. Now's not the time to look things up 😊"
+
+(I'm starting to boil at this point, this is the last question they ask of me so I check the time and there are 20 minutes left)
+
+"Would you be able to give me a quick rundown on what it is? I might be able to connect some dots"
+
+> "... No. (mumbles) Lets see... the solution I have is with a max-heap, but... is there any other way to do it without one...?"
+
+This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" that I don't know what a max heap is, and I kept repeating that I'll take some time to read up on it after the interview. Once that shitfest was over I look it up and LO-AND-BEHOLD:
+
+> [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
+
+Overall I'm extremely upset at the interviewer. There was plenty of time to find that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not. So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
+
+<br>---<br>
+
+### 3. Max Heap my Ass
+
+So I have no idea how they implemented their solution so whatever I manage to code up could perform worse than theirs, but it seems like it will similar to my [2nd solution](#2.-simpleton's-counter) where the max-heap takes place of the HashMap and the sorting.
+
+<details>
+    <summary>Code</summary>
+
+(Link to real code)[https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs]
+<pre><code>count quantity of elements into a maxheap
+if (largest_quantity &gt; string_length/2 + 1) {
+    no valid_list is possible
+}
+
+new_string = alternate values from maxheap
+</code></pre>
+
+
+<br>---<br>
 
 ## Hardware info: 
 
@@ -109,10 +174,8 @@ CPU max MHz: 4500.0000
 CPU min MHz: 800.0000  
 
 **RAM:**  
-	Size: 16 GB  
+	Size: 32 GB  
 	Speed: 3200 MT/s  
-	Configured Memory Speed: 3200 MT/s  
-	Volatile Size: 16 GB  
 
 **SSD:** WD Blue SN570 2TB  
 **OS:** Linux Mint 21.3 (6.8.0-52-generic)  
@@ -127,7 +190,7 @@ function applyTheme(mode) {
     });
 
     const toggleBtn = document.getElementById("themeToggle");
-    toggleBtn.textContent = mode === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode";
+    toggleBtn.textContent = mode === "dark" ? "Lightmode(ew)" : "Darkmode(4ever)";
 }
 
 function toggleTheme() {
