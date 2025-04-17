@@ -41,7 +41,7 @@ It's foolproof! The first thing I think of is _obviously_ the best solution /s. 
 <details>
     <summary>Code</summary>
 
-[Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a1_simpletons_array.rs)
+<p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a1_simpletons_array.rs" target="_blank">Link to real code</a></p>
 
 <pre><code>while (!valid_list) {
     if (curr_char == next_char) {
@@ -80,7 +80,7 @@ A hashmap would do the trick, O(n, n), still ain't great but its simple and can 
 <details>
     <summary>Code</summary>
 
-[Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a2_simpletons_counter.rs)
+<p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a2_simpletons_counter.rs" target="_blank">Link to real code</a></p>
 
 <pre><code>count quantity of elements into a hashmap
 sort based on count
@@ -148,7 +148,7 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 > "No, no. Now's not the time to look things up 😊"
 
-(I'm starting to boil at this point, this is the last question they ask of me so I check the time and there are 20 minutes left)
+(I'm starting to boil at this point, this is the last question they ask of me so I check the time and there are 20 minutes left out of the 30 minutes assigned for this question)
 
 "Would you be able to give me a quick rundown on what it is? I might be able to connect some dots"
 
@@ -158,7 +158,7 @@ This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" 
 
 > [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
 
-Overall I'm extremely upset at the interviewer. There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not.
+Overall I'm extremely upset at that interviewer. There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not.
 
 So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
 
@@ -173,7 +173,7 @@ Since I have no idea how they implemented their solution, whatever I manage to c
 <details>
     <summary>Code</summary>
 
-[Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs)
+<p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs" target="_blank">Link to real code</a></p>
 
 <pre><code>count quantity of elements into a maxheap
 if (largest_quantity &gt; string_length/2 + 1) {
