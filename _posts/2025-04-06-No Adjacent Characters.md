@@ -1,14 +1,5 @@
 <!-- TODO: make repo, add hardware info, always test on linux -->
 
-<div style="margin-bottom: 1em;">
-    <label for="themeToggle">Theme:</label>
-    <select id="themeToggle" onchange="setTheme(this.value)">
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-    </select>
-</div>
-
-
 
 > [!NOTE]
 > All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://google.ca)
@@ -102,24 +93,33 @@ For testing data I went with the following:
 
 ---
 
+<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>
 <img class="chart" data-name="2_chars" />
 <img class="chart" data-name="3_chars" />
 <img class="chart" data-name="500_chars" />
 
 <script>
-function setTheme(mode) {
-  localStorage.setItem("preferredTheme", mode);
-  document.querySelectorAll('img.chart').forEach(img => {
-    const name = img.dataset.name;
-    const base = "./2025-04-06-No Adjacent Characters Code/rust/results/charts/";
-    img.src = `${base}${name}_${mode}.png`;
-  });
+function applyTheme(mode) {
+    localStorage.setItem("preferredTheme", mode);
+    document.querySelectorAll('img.chart').forEach(img => {
+        const name = img.dataset.name;
+        const base = "/code/2025-04-06-No Adjacent Characters/rust/results/charts/";
+        img.src = `${base}${name}_${mode}.png`;
+    });
+
+    const toggleBtn = document.getElementById("themeToggle");
+    toggleBtn.textContent = mode === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode";
+}
+
+function toggleTheme() {
+    const current = localStorage.getItem("preferredTheme") || "dark";
+    const newMode = current === "dark" ? "light" : "dark";
+    applyTheme(newMode);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const saved = localStorage.getItem("preferredTheme") || "light";
-  document.getElementById("themeToggle").value = saved;
-  setTheme(saved);
+    const saved = localStorage.getItem("preferredTheme") || "dark";
+    applyTheme(saved);
 });
 </script>
 
