@@ -5,12 +5,14 @@
 
 I've recently had the pleasure to interview with a company that rhymes with galazon, also known as the company who tried to get people with really good eyesight to guess what items people picked up from [a store with no cashiers](https://www.cnn.com/2024/04/03/business/amazons-self-checkout-technology-grocery-flop/index.html), and one of the briliant questions went something like this:
 
-> "Given a string, return a new string in which no two adjacent characters are the same."
+> "Given a string, return a new string in which no two adjacent characters are the same."  
 > Ex: xyzzz ➡ zxzyz
 
 Short and sweet, I was feeling confident, I had a pre-interview medium leetcode to warm up, should be ez:
 
-<br>---<br>
+<br> 
+---
+<br>
 
 ### 1. Simpleton's Thicc Array
 
@@ -53,7 +55,9 @@ It's foolproof! The first thing I think of is _obviously_ the best solution /s. 
 
 Lets try think of something better...
 
-<br>---<br>
+<br> 
+---
+<br>
 
 ### 2. Simpleton's Counter
 
@@ -84,7 +88,10 @@ new_string = alternate values from hashmap
 
 </details>
 
-<br>---<br>
+<br> 
+---
+<br>
+
 **ASIDE**
 
 For testing data I went with the following: 
@@ -92,7 +99,10 @@ For testing data I went with the following:
 - Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% possible valid list rate
 - Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
 - Character limit testing: N characters, 500 unique characters, ~100.000% possible valid list rate
-<br>---<br> 
+<br> 
+---
+<br>
+
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <br>
@@ -143,7 +153,9 @@ This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" 
 
 Overall I'm extremely upset at the interviewer. There was plenty of time to find that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not. So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
 
-<br>---<br>
+<br> 
+---
+<br>
 
 ### 3. Max Heap my Ass
 
@@ -160,9 +172,11 @@ if (largest_quantity &gt; string_length/2 + 1) {
 
 new_string = alternate values from maxheap
 </code></pre>
+</details>
 
-
-<br>---<br>
+<br>
+---
+<br>
 
 ## Hardware info: 
 
