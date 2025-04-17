@@ -1,5 +1,15 @@
 <!-- TODO: make repo, add hardware info, always test on linux -->
 
+<div style="margin-bottom: 1em;">
+    <label for="themeToggle">Theme:</label>
+    <select id="themeToggle" onchange="setTheme(this.value)">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</div>
+
+
+
 > [!NOTE]
 > All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://google.ca)
 
@@ -33,29 +43,19 @@ zxxyxzz
 It's foolproof! The first thing I think of is _obviously_ the best solution, but wait, the interviewer is looking at me like I just bought 2gal of soy milk, so something must be up and its not updog. Hmmm, it's O(n) runtime and... O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
 
 <details>
-    <summary>Code: Simpleton's Thicc Array</summary>
+    <summary>Pseudocode: Simpleton's Thicc Array</summary>
     
-<!-- TODO: make and test -->
-```cpp
-
-char[] SimpletonsThiccArray(char[] input) {
-
-    // setup
-    char[] output = [(input.size*2)+1];
-    for (int i = 0; i < input.size; i++) {
-        output[2*i] = "_";
-        output[2*(i+1)] = input[i];
+```
+while (!valid_list) {
+    if (curr_char == next_char) {
+        try swap next_char with non-matching char ahead in the list
+        else
+        try swap next_char with non-matching char behind in the list
+        else
+        no valid_list is possible
     }
-
-    timer.start();
-
-//implement here
-timer.end();
-
-    return output;
-
+    curr_char = next_char
 }
-
 ```
 
 </details>
@@ -72,31 +72,72 @@ xyzzz
 |-> pick highest count and alternate with next highest, repeat until nothing left
 |-> zxzyz
 
-````
+```
 
 A hashmap would do the trick, O(n, n), still ain't great but its simple and can use basic stdlib implementations of hashmap and sorting so no issues there. Lets try it out and see how it goes (lets do both for the heck of it)
 
 <details>
-    <summary>Code: Simpleton's Counter</summary>
+    <summary>Pseudocode: Simpleton's Counter</summary>
 
-<!-- TODO: make and test -->
-```cpp
-#include <iostream>
-
-int main() {
-std::cout << "Hello, world!" << std::endl;
-return 0;
+```
+count quantity of elements into a hashmap
+sort based on count
+if (largest_quantity > string_length/2 + 1) {
+    no valid_list is possible
 }
-````
+
+new_string = alternate values from hashmap
+```
 
 </details>
 
-> [!NOTE]
-> Sticking to basic alphanumeric english for now
+---
+**ASIDE**
 
-<!-- insert graph 1 here:
+For testing data I went with the following: 
 
-y axis: time
-x axis: amount of characters
+- Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% valid list rate
+- Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% valid list rate
+- Character limit testing: N characters, N/2 unique characters, ~100.000% valid list rate
 
--->
+---
+
+<img class="chart" data-name="2_chars" />
+<img class="chart" data-name="3_chars" />
+<img class="chart" data-name="500_chars" />
+
+<script>
+function setTheme(mode) {
+  localStorage.setItem("preferredTheme", mode);
+  document.querySelectorAll('img.chart').forEach(img => {
+    const name = img.dataset.name;
+    const base = "./2025-04-06-No Adjacent Characters Code/rust/results/charts/";
+    img.src = `${base}${name}_${mode}.png`;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem("preferredTheme") || "light";
+  document.getElementById("themeToggle").value = saved;
+  setTheme(saved);
+});
+</script>
+
+
+## Hardware info: 
+
+CPU:
+Model name:                           11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz
+Thread(s) per core:                   2
+Core(s) per socket:                   6
+CPU max MHz:                          4500.0000
+CPU min MHz:                          800.0000
+
+RAM:
+	Size: 16 GB
+	Speed: 3200 MT/s
+	Configured Memory Speed: 3200 MT/s
+	Volatile Size: 16 GB
+
+SSD: WD Blue SN570 2TB
+OS: Linux Mint 21.3 (6.8.0-52-generic)
