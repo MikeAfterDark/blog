@@ -15,7 +15,7 @@ Short and sweet, I was feeling confident, I had a pre-interview medium leetcode 
 
 <br>
 
-### 1. Simpleton's Thicc Array
+### Simpleton Thicc Array
 
 To appease the interviewer, I had an answer within 20 seconds of reading the question, slightly inspired by my uni's combinatorics class:
 
@@ -39,9 +39,9 @@ zxxyxzz
 It's foolproof! The first thing I think of is _obviously_ the best solution /s. I mentioned that it seemed like O(n) runtime [Spoiler: it wasn't] and O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
 
 <details>
-    <summary>Pseudocode: Simpleton's Thicc Array</summary>
+    <summary>Code</summary>
 
-(Link to real code)[https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a1_simpletons_array.rs]
+[Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a1_simpletons_array.rs)
 <pre><code>while (!valid_list) {
     if (curr_char == next_char) {
         try swap next_char with non-matching char ahead in the list
@@ -62,7 +62,7 @@ Lets try think of something better...
 
 <br>
 
-### 2. Simpleton's Counter
+### Simpleton Counter
 
 ```
 
@@ -79,7 +79,7 @@ A hashmap would do the trick, O(n, n), still ain't great but its simple and can 
 <details>
     <summary>Code</summary>
 
-(Link to real code)[https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a2_simpletons_counter.rs]
+[Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a2_simpletons_counter.rs)
 <pre><code>count quantity of elements into a hashmap
 sort based on count
 if (largest_quantity &gt; string_length/2 + 1) {
@@ -118,7 +118,7 @@ For testing data I went with the following:
 <img class="chart" data-name="500_chars" />  
 <br>
 
-> Now we can clearly see the [simpleton's array](#1.-simpleton's-thicc-array) having a O(n^2, n) complexity while [simpleton's counter](#2.-simpleton's-counter) has a nice O(n, n)
+> Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n, n)
 
 Having implemented my solution in bastardized C# pseudocode for the interviewer, I was pretty happy and ready to move on. Then it all started falling apart when the interviewer unmuted
 
@@ -166,12 +166,12 @@ So thats when I decided to write this post out of spite. Lets see how good your 
 
 ### 3. Max Heap my Ass
 
-Since I have no idea how they implemented their solution, whatever I manage to code up could perform worse than theirs but it seems like it will similar to my [2nd solution](#2.-simpleton's-counter) where the max-heap takes place of the HashMap and the sorting.
+Since I have no idea how they implemented their solution, whatever I manage to code up could perform worse than theirs but it seems like it will similar to my [2nd solution](#simpleton-counter) where the max-heap takes place of the HashMap and the sorting.
 
 <details>
     <summary>Code</summary>
 
-(Link to real code)[https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs]
+[Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs)
 <pre><code>count quantity of elements into a maxheap
 if (largest_quantity &gt; string_length/2 + 1) {
     no valid_list is possible
