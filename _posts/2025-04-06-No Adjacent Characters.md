@@ -103,7 +103,7 @@ function applyTheme(mode) {
     localStorage.setItem("preferredTheme", mode);
     document.querySelectorAll('img.chart').forEach(img => {
         const name = img.dataset.name;
-        const base = "/code/2025-04-06-No_Adjacent_Characters/rust/results/charts/";
+        const base = "/code/2025-04-06_No_Adjacent_Characters/rust/results/charts/";
         img.src = `${base}${name}_${mode}.png`;
     });
 
