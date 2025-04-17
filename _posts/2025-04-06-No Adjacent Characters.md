@@ -42,6 +42,7 @@ It's foolproof! The first thing I think of is _obviously_ the best solution /s. 
     <summary>Code</summary>
 
 [Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a1_simpletons_array.rs)
+
 <pre><code>while (!valid_list) {
     if (curr_char == next_char) {
         try swap next_char with non-matching char ahead in the list
@@ -80,6 +81,7 @@ A hashmap would do the trick, O(n, n), still ain't great but its simple and can 
     <summary>Code</summary>
 
 [Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a2_simpletons_counter.rs)
+
 <pre><code>count quantity of elements into a hashmap
 sort based on count
 if (largest_quantity &gt; string_length/2 + 1) {
@@ -172,6 +174,7 @@ Since I have no idea how they implemented their solution, whatever I manage to c
     <summary>Code</summary>
 
 [Link to real code](https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a3_max_heap_my_ass.rs)
+
 <pre><code>count quantity of elements into a maxheap
 if (largest_quantity &gt; string_length/2 + 1) {
     no valid_list is possible
