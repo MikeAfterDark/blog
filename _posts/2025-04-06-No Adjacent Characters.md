@@ -11,7 +11,9 @@ I've recently had the pleasure to interview with a company that rhymes with gala
 Short and sweet, I was feeling confident, I had a pre-interview medium leetcode to warm up, should be ez:
 
 <br> 
+
 ---
+
 <br>
 
 ### 1. Simpleton's Thicc Array
