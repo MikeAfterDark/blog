@@ -56,10 +56,20 @@ generate_chart() {
 # generate_data 2 20000 2
 # generate_data 2 15000 3
 # generate_data 2 10000 500
+# generate_data 2 40000 2
+# generate_data 2 20000 3
+# generate_data 2 15000 500
+generate_data 2 80000 3
 
 # generate_data 3 20000 2
 # generate_data 3 15000 3
 # generate_data 3 10000 500
+
+# generate_data 4 20000 2
+# generate_data 4 40000 2
+# generate_data 4 20000 3
+# generate_data 4 15000 500
+generate_data 4 80000 3
 
 # //=== Chart Generation: ===\\
 # Syntax:
@@ -72,3 +82,9 @@ generate_chart() {
 # generate_chart 2 comparing_algos_2_3_with_2_chars 2 20000 3 20000
 # generate_chart 3 comparing_algos_2_3_with_3_chars 2 15000 3 15000
 # generate_chart 500 comparing_algos_2_3_with_500_chars 2 10000 3 10000
+
+# generate_chart 2 comparing_algos_2_4_with_2_chars 2 20000 4 20000
+# generate_chart 2 comparing_algos_2_4_with_2_chars 2 40000 4 40000
+# generate_chart 3 comparing_algos_2_4_with_3_chars 2 20000 4 20000
+# generate_chart 500 comparing_algos_2_4_with_500_chars 2 15000 4 15000
+generate_chart 3 comparing_algos_2_4_with_3_chars 2 80000 4 80000

@@ -1,5 +1,4 @@
-<!-- TODO: make repo, add hardware info, always test on linux -->
-
+### 
 
 > All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://github.com/MikeAfterDark/blog/tree/main/assets/2025-04-06_No_Adjacent_Characters/rust)
 
@@ -199,13 +198,49 @@ new_string = alternate values from maxheap
 <img class="chart" data-name="comparing_algos_2_3_with_500_chars" />  
 <br>
 
+> I'm not saying "I fucking knew it", but I was pretty convinced that a 'maxheap' couldn't be much better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
 
+With that satisfying analysis out of the way I could end things here, but I wonder if there's any way to improve performance more?
 
 ---
 
 <br>
 
-## Hardware info: 
+Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the solutions are in a similar O(n * k log k, n) territory, but I'll try optimize it anyway with the goal of lowering time (cuz memory is cheap)
+
+### Optimizing Simpleton Counter
+
+There are three parts to my fastest algorithm:
+
+1. Counting occurances of each element
+2. Sorting the counts
+3. Looping over each count to construct the new list
+
+Lets grab the lowest hanging fruit and multi-thread this bitch.
+
+1. Counting: Can be multi-threaded by giving each thread a section of the array to count
+2. Sorting: Can't multi-thread (afaik)
+3. Build new List: Can be multi-threaded as long as threads are assigned correctly
+
+<details>
+    <summary>Code</summary>
+
+<p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a4_multithreading_a2.rs" target="_blank">Link to real code</a></p>
+
+<pre><code>split up the string into num_thread sections
+let each thread add a count to the hashmap
+sort the hashmap based on count
+if (largest_quantity &gt; string_length/2 + 1) {
+    no valid_list is possible
+}
+
+make new string by adding elements to specific indexes without overlap in threads
+</code></pre>
+</details>
+
+<a href="#top">Back to top</a>
+
+### Hardware info: 
 
 **CPU:**  
 Model name: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz  
@@ -220,6 +255,7 @@ CPU min MHz: 800.0000
 
 **SSD:** WD Blue SN570 2TB  
 **OS:** Linux Mint 21.3 (6.8.0-52-generic)  
+
 
 <script>
 function applyTheme(mode) {
@@ -245,3 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(saved);
 });
 </script>
+
+
+todo: make sure to add that you can multithread my solution 2, while the max heap can't be multithreaded and will be slower (prove with graphs)

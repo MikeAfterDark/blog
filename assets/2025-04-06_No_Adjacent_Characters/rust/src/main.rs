@@ -3,6 +3,7 @@ mod utility;
 mod a1_simpletons_array;
 mod a2_simpletons_counter;
 mod a3_max_heap_my_ass;
+mod a4_multithreading_a2;
 
 use clap::{ArgGroup, Parser};
 use core::panic;
@@ -56,6 +57,7 @@ const RUNNERS: &[AlgoFn] = &[
     a1_simpletons_array::run,
     a2_simpletons_counter::run,
     a3_max_heap_my_ass::run,
+    a4_multithreading_a2::run,
 ];
 
 #[derive(Debug, Clone)]
