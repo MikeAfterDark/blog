@@ -4,12 +4,16 @@ mod a1_simpletons_array;
 mod a2_simpletons_counter;
 mod a3_max_heap_my_ass;
 mod a4_multithreading_a2;
+mod a5_multithreading_a2;
 
 use clap::{ArgGroup, Parser};
+use std::collections::HashMap;
 use core::panic;
 use std::fs;
-use rand::{Rng, rng};
-use std::collections::HashMap;
+use rand::Rng;
+use rand_pcg::Pcg64Mcg;
+use rand::SeedableRng;
+use rand::distr::{Distribution, Uniform};
 
 #[derive(Parser, Debug)]
 #[command(name = "No Adjacent Characters", 
@@ -52,12 +56,14 @@ struct Args {
     increment: bool,
 }
 
-type AlgoFn = fn(&[u128]) -> Vec<u128>;
+
+type AlgoFn = fn(&mut [u128]);
 const RUNNERS: &[AlgoFn] = &[
     a1_simpletons_array::run,
     a2_simpletons_counter::run,
     a3_max_heap_my_ass::run,
     a4_multithreading_a2::run,
+    a5_multithreading_a2::run,
 ];
 
 #[derive(Debug, Clone)]
@@ -79,44 +85,50 @@ fn main() {
     let config = Args::parse();
     let mut stats_map: HashMap<String, AlgoStats> = HashMap::new();
 
-    let num_chars = config.u128[1];
+    let num_chars = config.u128[1]-1;
     let start = if config.increment { config.u128[1] } else { 0 };
     let end = if config.increment { config.u128[0] } else { 1 };
+
+    let dist = Uniform::<u128>::new_inclusive(0, num_chars).unwrap();
+    let mut rng = Pcg64Mcg::from_rng(&mut rand::rng());
 
     let mut results_summary = String::new();
     for i in start..end {
         let length = if config.increment { i } else { config.u128[0] }; 
         for _ in 0..config.iterations {
-            let data = generate_int_vector(length, num_chars);
 
-            let results = run_algorithms(&data, &config);
-            for (name, duration_ns, result) in results {
-                let success = !result.is_empty();
+            if num_chars < 1 || num_chars > length {
+                panic!("num_unique_chars cannot be less than 1 or greater than length. Num_chars: {}, length: {}", num_chars, length);
+            }
+
+            let mut data = gen_random_u128s(length, &dist, &mut rng);
+            let results = run_algorithms(&mut data, &config);
+
+            for (name, duration_ns) in results {
+                let success = !data.is_empty();
                 record_stat(&mut stats_map, &name, duration_ns, success);
             }
         }
-        results_summary += &generate_stats_report(&stats_map, length, num_chars);
+        results_summary += &generate_stats_report(&stats_map, length, config.u128[1]);
     }
 
     write_output(&results_summary, config.output.as_ref());
 }
 
-fn generate_int_vector(length: u128, num_unique_chars: u128) -> Vec<u128> {
-    if num_unique_chars < 1 {
-        panic!("num_unique_chars cannot be less than 1");
+fn gen_random_u128s(
+    count: u128,
+    distribution: &Uniform<u128>,
+    rng: &mut (impl Rng + ?Sized),
+) -> Vec<u128> {
+    let mut results = Vec::with_capacity(count as usize);
+    let iter = distribution.sample_iter(rng);
+    for (_, sample) in (0..count).zip(iter) {
+        results.push(sample);
     }
-    if num_unique_chars > length {
-        panic!("num_unique_chars cannot be greater than length");
-    }
-
-    let mut rng = rng();
-
-    (0..length)
-        .map(|_| rng.random_range(0..=num_unique_chars - 1))
-        .collect()
+    results
 }
 
-fn run_algorithms(input: &[u128], args: &Args) -> Vec<(String, u128, Vec<u128>)> {
+fn run_algorithms(input: &mut [u128], args: &Args) -> Vec<(String, u128)> {
     if args.all {
         (0..RUNNERS.len())
             .map(|idx| run_algorithm(input, idx))
@@ -133,10 +145,10 @@ fn run_algorithms(input: &[u128], args: &Args) -> Vec<(String, u128, Vec<u128>)>
 }
 
 
-fn run_algorithm(input: &[u128], index: usize) -> (String, u128, Vec<u128>) {
-    let (result, duration) = utility::measure(|| RUNNERS[index](input));
+fn run_algorithm(input: &mut [u128], index: usize) -> (String, u128) {
+    let duration = utility::measure(|| RUNNERS[index](input));
     let name = (index + 1).to_string();
-    (name, duration.as_nanos(), result)
+    (name, duration.as_nanos())
 }
 
 fn generate_stats_report(stats_map: &HashMap<String, AlgoStats>, string_length: u128, num_chars: u128) -> String {

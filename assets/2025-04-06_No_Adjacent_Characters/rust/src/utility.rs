@@ -4,11 +4,10 @@ pub fn is_valid_vector(vector: &[u128]) -> bool {
     !vector.windows(2).any(|w| w[0] == w[1])
 }
 
-pub fn measure<T, F: FnOnce() -> T>(f: F) -> (T, Duration) {
+pub fn measure<F: FnOnce()>(f: F) -> Duration {
     let start = Instant::now();
-    let result = f();
-    let duration = start.elapsed();
-    (result, duration)
+    f();
+    start.elapsed()
 }
 
 /// Stats help

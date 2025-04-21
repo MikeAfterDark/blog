@@ -198,15 +198,15 @@ new_string = alternate values from maxheap
 <img class="chart" data-name="comparing_algos_2_3_with_500_chars" />  
 <br>
 
-> I'm not saying "I fucking knew it", but I was pretty convinced that a 'maxheap' couldn't be much better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
+> I'm not saying "I fucking knew it", but I was pretty convinced that a 'maxheap' couldn't be better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
 
-With that satisfying analysis out of the way I could end things here, but I wonder if there's any way to improve performance more?
+With that theoretical analysis I could end things here, but I wonder if there's any way to practically improve performance more?
 
 ---
 
 <br>
 
-Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the solutions are in a similar O(n * k log k, n) territory, but I'll try optimize it anyway with the goal of lowering time (cuz memory is cheap)
+Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) territory, but I'll try optimize it anyway with the goal of lowering time.
 
 ### Optimizing Simpleton Counter
 
@@ -218,9 +218,10 @@ There are three parts to my fastest algorithm:
 
 Lets grab the lowest hanging fruit and multi-thread this bitch.
 
-1. Counting: Can be multi-threaded by giving each thread a section of the array to count
-2. Sorting: Can't multi-thread (afaik)
-3. Build new List: Can be multi-threaded as long as threads are assigned correctly
+| Counting:      | Can be multi-threaded by giving each thread a section of the array to count     |
+|:---------------|:--------------------------------------------------------------------------------|
+| Sorting:       | Multi-threading will likely be slower than single-threaded for few unique chars |
+| Build new List | Can be multi-threaded as long as threads are assigned correctly                 |
 
 <details>
     <summary>Code</summary>
@@ -237,6 +238,67 @@ if (largest_quantity &gt; string_length/2 + 1) {
 make new string by adding elements to specific indexes without overlap in threads
 </code></pre>
 </details>
+
+<br> 
+
+---
+
+<br>
+
+<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
+<img class="chart" data-name="comparing_algos_2_4_with_2_chars_all_100k" />  
+<br>
+<img class="chart" data-name="comparing_algos_2_4_with_3_chars_all_100k" />  
+<br>
+<img class="chart" data-name="comparing_algos_2_4_with_500_chars_all_100k" />  
+<br>
+<img class="chart" data-name="comparing_algos_2_4_with_10k_chars_all_100k" />  
+<br>
+
+> Its glorious, even with my [low-tier laptop CPU](#hardware-info) that only has 12 threads, multi-threading overtakes single threading really quickly, especially on string with fewer unique-characters. I suspect that the amount of unique-characters is mostly impacting the final string construction after sorting, so lets try without multi-threading the new string construction:
+
+<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
+<img class="chart" data-name="compare 4 5, 2 chars" />  
+<br>
+<img class="chart" data-name="compare 4 5, 3 chars" />  
+<br>
+<img class="chart" data-name="compare 4 5, 500 chars" />  
+<br>
+<img class="chart" data-name="compare 4 5, 10k chars" />  
+<br>
+
+So far so good with a huge performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get `1B unique characters in under 1s`
+
+### 1,000,000,000 characters in under a second
+
+First things first I need to upgrade my random generator since my current one takes ~25s for 1B characters:
+
+```rust
+fn generate_int_vector(length: u128, num_unique_chars: u128) -> Vec<u128> {
+    // ... error handling ...
+
+    let mut rng = rng();
+    (0..length)
+        .map(|_| rng.random_range(0..=num_unique_chars - 1))
+        .collect()
+}
+```
+
+Lets get that randomizer initialization out of a function I call repeatedly, then looking around I found [SmallRng](https://docs.rs/rand/latest/rand/rngs/struct.SmallRng.html), [Pcg64](https://docs.rs/rand_pcg/latest/rand_pcg/), and a [rust forum post from Nobody_1707](https://users.rust-lang.org/t/fastest-way-to-bulk-generate-random-numbers-within-a-range/119625/6). Since I know nothing about RNGs under the hood (except that one [tom scott lava lamp rng](https://www.youtube.com/watch?v=1cUUfMeOijg) video), lets benchmark all three to figure out which one I'll use:
+
+| RNG Type      | Time (min) | Time (avg) | Time (max) |
+|---------------|------------|------------|------------|
+| Rng u128      | 7.3326 ms  | 7.3362 ms  | 7.3401 ms  |
+| SmallRng u128 | 2.8713 ms  | 2.8734 ms  | 2.8756 ms  |
+| Pcg64Mcg u128 | 2.0382 ms  | 2.0398 ms  | 2.0418 ms  |
+
+Ahoy [PCG64Mcg](https://rust-random.github.io/rand/rand_pcg/type.Pcg64Mcg.html). I've got no idea what it is or how it works cuz 'linear congruential generator as the state-transition function', 'permutation functions on tuples' sounds like some math wizardry that I ain't gonna argue with. I'll leave the understanding part as an exercise for the reader: [PCG website](https://www.pcg-random.org/index.html), [Wikipedia](https://en.wikipedia.org/wiki/Permuted_congruential_generator)
+
+A quick little test run of the new PCG64McgRNG (say that 10 times fast), generates us an initial 1B length string in ~8s. 
+
+> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because turns it out that having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place. I've had to refactor and re-compute data for all the charts so that all the algorithms modified the existing input array instead of trying to allocate 2 or even 3 arrays, oops. The sad thing is that this problem doesn't go away as my 'counting' method requires a separate array... which would use up a lot of RAM if I had 1B unique characters
+
+So all together I can currently process a 1B array of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s...  time to find my 32x improvement (and download some RAM)
 
 <a href="#top">Back to top</a>
 

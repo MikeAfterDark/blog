@@ -1,8 +1,8 @@
 use std::collections::{BinaryHeap, HashMap};
 
-pub fn run(input: &[u128]) -> Vec<u128> {
+pub fn run(input: &mut [u128]) {
     let mut count_map = HashMap::new();
-    for &num in input {
+    for &num in input.iter() {
         *count_map.entry(num).or_insert(0) += 1;
     }
 
@@ -13,29 +13,42 @@ pub fn run(input: &[u128]) -> Vec<u128> {
 
     if let Some(&(max_count, _)) = heap.peek() {
         if max_count > input.len().div_ceil(2) {
-            return vec![];
+            input.to_vec().clear();
+            return;
         }
     }
 
-    let mut result = vec![0; input.len()];
-    while heap.len() >= 2 {
-        let (count1, num1) = heap.pop().unwrap();
-        let (count2, num2) = heap.pop().unwrap();
+    let mut idx = 0;
+    let mut current = heap.pop();
+    let mut next = heap.pop();
 
-        result.push(num1);
-        result.push(num2);
+    while let Some((mut count1, num1)) = current {
+        while count1 > 0 {
+            if let Some((mut count2, num2)) = next {
+                input[idx] = num1;
+                idx += 1;
+                input[idx] = num2;
+                idx += 1;
 
-        if count1 > 1 {
-            heap.push((count1 - 1, num1));
+                count1 -= 1;
+                count2 -= 1;
+
+                if count2 == 0 {
+                    next = heap.pop();
+                } else {
+                    next = Some((count2, num2));
+                }
+            } else {
+                input[idx] = num1;
+                idx += 1;
+                count1 -= 1;
+            }
         }
-        if count2 > 1 {
-            heap.push((count2 - 1, num2));
-        }
+        current = next;
+        next = heap.pop();
     }
 
     if let Some((_count, num)) = heap.pop() {
-        result.push(num);
+        input[idx] = num;
     }
-
-    result
 }
