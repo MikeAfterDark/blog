@@ -1,5 +1,3 @@
-### 
-
 > All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://github.com/MikeAfterDark/blog/tree/main/assets/2025-04-06_No_Adjacent_Characters/rust)
 
 I've recently had the pleasure to interview with a company that rhymes with galazon, also known as the company who tried to get people with really good eyesight to guess what items people picked up from [a store with no cashiers](https://www.cnn.com/2024/04/03/business/amazons-self-checkout-technology-grocery-flop/index.html), and one of the briliant questions went something like this:
@@ -218,9 +216,10 @@ There are three parts to my fastest algorithm:
 
 Lets grab the lowest hanging fruit and multi-thread this bitch.
 
-| Counting:      | Can be multi-threaded by giving each thread a section of the array to count     |
+| Part:          | Thoughts:                                                                       |
 |:---------------|:--------------------------------------------------------------------------------|
-| Sorting:       | Multi-threading will likely be slower than single-threaded for few unique chars |
+| Counting       | Can be multi-threaded by giving each thread a section of the array to count     |
+| Sorting        | Multi-threading will likely be slower than single-threaded for few unique chars |
 | Build new List | Can be multi-threaded as long as threads are assigned correctly                 |
 
 <details>
@@ -296,9 +295,18 @@ Ahoy [PCG64Mcg](https://rust-random.github.io/rand/rand_pcg/type.Pcg64Mcg.html).
 
 A quick little test run of the new PCG64McgRNG (say that 10 times fast), generates us an initial 1B length string in ~8s. 
 
-> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because turns it out that having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place. I've had to refactor and re-compute data for all the charts so that all the algorithms modified the existing input array instead of trying to allocate 2 or even 3 arrays, oops. The sad thing is that this problem doesn't go away as my 'counting' method requires a separate array... which would use up a lot of RAM if I had 1B unique characters
+> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because turns it out that I was overly ambitious with using u128 for the unique characters, and u128s are 16 bytes long... so having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place. I've had to refactor and re-compute data for all the charts so that all the algorithms modified the existing input array instead of trying to allocate 2 or even 3 arrays, oops. The sad thing is that this problem doesn't go away as my 'counting' method requires a separate array... which would use up a lot of RAM if I had 1B unique characters.
 
-So all together I can currently process a 1B array of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s...  time to find my 32x improvement (and download some RAM)
+So all together I can currently process a 1B array of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s, I need a 32x improvement.
+
+#### Step 1: Stop using u128s
+
+Having more unique characters is realistically just stress testing the sorting algorithm, so lets try `u8` for 1 byte (max 255). Hopefully that should be enough to see a difference between 2,3,255 character counts, but still be performant.
+
+| Length | Chars | Algo time | Real time |
+|--------|-------|-----------|-----------|
+| 1B     | 2     | ~1.7s     | ~4.0s     |
+| 1B     | 255   | ~2.5s     | ~4.6s     |
 
 <a href="#top">Back to top</a>
 
@@ -343,6 +351,3 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(saved);
 });
 </script>
-
-
-todo: make sure to add that you can multithread my solution 2, while the max heap can't be multithreaded and will be slower (prove with graphs)

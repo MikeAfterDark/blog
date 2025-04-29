@@ -1,6 +1,6 @@
 use std::time::{Duration, Instant};
 
-pub fn is_valid_vector(vector: &[u128]) -> bool {
+pub fn is_valid_vector(vector: &[u8]) -> bool {
     !vector.windows(2).any(|w| w[0] == w[1])
 }
 

@@ -1,16 +1,16 @@
 use std::collections::HashMap;
 
-pub fn run(input: &mut [u128]) {
+pub fn run(input: &mut [u8]) {
     if input.len() <= 1 {
         return;
     }
 
-    let mut counts: HashMap<u128, usize> = HashMap::new();
+    let mut counts: HashMap<u8, usize> = HashMap::new();
     for value in input.iter() {
         *counts.entry(*value).or_default() += 1;
     }
     
-    let mut elements: Vec<(u128, usize)> = counts.into_iter().collect();
+    let mut elements: Vec<(u8, usize)> = counts.into_iter().collect();
     elements.sort_by(|a, b| b.1.cmp(&a.1)); 
 
     let max_count = elements[0].1;

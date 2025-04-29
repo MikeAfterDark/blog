@@ -1,4 +1,4 @@
-pub fn run(input: &mut [u128]) {
+pub fn run(input: &mut [u8]) {
     let len = input.len();
 
     if len < 2 {

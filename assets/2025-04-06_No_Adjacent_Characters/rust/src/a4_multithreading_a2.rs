@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use rayon::prelude::*;
 use rayon::iter::repeatn;
 
-pub fn run(input: &mut [u128]) {
+pub fn run(input: &mut [u8]) {
     if input.len() <= 1 {
         return;
     }
@@ -24,7 +24,7 @@ pub fn run(input: &mut [u128]) {
             acc
         });
 
-    let mut elements: Vec<(u128, usize)> = counts.into_iter().collect();
+    let mut elements: Vec<(u8, usize)> = counts.into_iter().collect();
     elements.sort_by(|a, b| b.1.cmp(&a.1));
 
     let max_count = elements[0].1;
@@ -34,7 +34,7 @@ pub fn run(input: &mut [u128]) {
         return;
     }
 
-    let flat: Vec<u128> = elements
+    let flat: Vec<u8> = elements
         .into_par_iter()
         .flat_map(|(val, count)| repeatn(val, count))
         .collect();

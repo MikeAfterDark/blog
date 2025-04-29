@@ -35,7 +35,7 @@ struct Args {
     #[arg(long)]
     all: bool,
 
-    /// [u128] [u128] Generate random input with a length and number of unique values
+    /// [u128] [u8] Generate random input with a length and number of unique values
     #[arg(num_args = 2, value_names = ["LENGTH", "UNIQUE_COUNT"])]
     u128: Vec<u128>, 
 
@@ -57,7 +57,7 @@ struct Args {
 }
 
 
-type AlgoFn = fn(&mut [u128]);
+type AlgoFn = fn(&mut [u8]);
 const RUNNERS: &[AlgoFn] = &[
     a1_simpletons_array::run,
     a2_simpletons_counter::run,
@@ -85,11 +85,11 @@ fn main() {
     let config = Args::parse();
     let mut stats_map: HashMap<String, AlgoStats> = HashMap::new();
 
-    let num_chars = config.u128[1]-1;
+    let num_chars = (config.u128[1]-1) as u8;
     let start = if config.increment { config.u128[1] } else { 0 };
     let end = if config.increment { config.u128[0] } else { 1 };
 
-    let dist = Uniform::<u128>::new_inclusive(0, num_chars).unwrap();
+    let dist = Uniform::<u8>::new_inclusive(0, num_chars).unwrap();
     let mut rng = Pcg64Mcg::from_rng(&mut rand::rng());
 
     let mut results_summary = String::new();
@@ -97,7 +97,7 @@ fn main() {
         let length = if config.increment { i } else { config.u128[0] }; 
         for _ in 0..config.iterations {
 
-            if num_chars < 1 || num_chars > length {
+            if num_chars < 1 || num_chars as u128 > length {
                 panic!("num_unique_chars cannot be less than 1 or greater than length. Num_chars: {}, length: {}", num_chars, length);
             }
 
@@ -117,9 +117,9 @@ fn main() {
 
 fn gen_random_u128s(
     count: u128,
-    distribution: &Uniform<u128>,
+    distribution: &Uniform<u8>,
     rng: &mut (impl Rng + ?Sized),
-) -> Vec<u128> {
+) -> Vec<u8> {
     let mut results = Vec::with_capacity(count as usize);
     let iter = distribution.sample_iter(rng);
     for (_, sample) in (0..count).zip(iter) {
@@ -128,7 +128,7 @@ fn gen_random_u128s(
     results
 }
 
-fn run_algorithms(input: &mut [u128], args: &Args) -> Vec<(String, u128)> {
+fn run_algorithms(input: &mut [u8], args: &Args) -> Vec<(String, u128)> {
     if args.all {
         (0..RUNNERS.len())
             .map(|idx| run_algorithm(input, idx))
@@ -145,7 +145,7 @@ fn run_algorithms(input: &mut [u128], args: &Args) -> Vec<(String, u128)> {
 }
 
 
-fn run_algorithm(input: &mut [u128], index: usize) -> (String, u128) {
+fn run_algorithm(input: &mut [u8], index: usize) -> (String, u128) {
     let duration = utility::measure(|| RUNNERS[index](input));
     let name = (index + 1).to_string();
     (name, duration.as_nanos())

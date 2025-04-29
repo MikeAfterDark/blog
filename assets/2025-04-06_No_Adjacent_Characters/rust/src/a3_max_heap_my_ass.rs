@@ -1,6 +1,6 @@
 use std::collections::{BinaryHeap, HashMap};
 
-pub fn run(input: &mut [u128]) {
+pub fn run(input: &mut [u8]) {
     let mut count_map = HashMap::new();
     for &num in input.iter() {
         *count_map.entry(num).or_insert(0) += 1;
