@@ -52,9 +52,9 @@ It's foolproof! The first thing I think of is _obviously_ the best solution /s. 
 }</code></pre>
 </details>
 
-Lets try think of something better...
-
 <br> 
+
+Lets try think of something better...
 
 ---
 
@@ -90,8 +90,6 @@ new_string = alternate values from hashmap
 
 </details>
 
----
-
 <br>
 
 **ASIDE**
@@ -102,12 +100,7 @@ For testing data I went with the following:
 - Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
 - Character limit testing: N characters, 500 unique characters, ~100.000% possible valid list rate
 
-<br> 
-
----
-
 <br>
-
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 
@@ -121,6 +114,8 @@ For testing data I went with the following:
 > Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n, n)
 
 Having implemented my solution in bastardized C# pseudocode for the interviewer, I was pretty happy and ready to move on. Then it all started falling apart when the interviewer unmuted
+
+---
 
 ### [Great Expectations](https://www.youtube.com/watch?v=O5QIGFKAHgk) (venting):
 
@@ -185,10 +180,6 @@ new_string = alternate values from maxheap
 </code></pre>
 </details>
 
-<br> 
-
----
-
 <br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
@@ -203,11 +194,9 @@ new_string = alternate values from maxheap
 
 With that theoretical analysis I could end things here, but I wonder if there's any way to practically improve performance more?
 
----
-
-<br>
-
 Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) territory, but I'll try optimize it anyway with the goal of lowering time.
+
+---
 
 ### Optimizing Simpleton Counter for fun
 
@@ -241,10 +230,6 @@ make new string by adding elements to specific indexes without overlap in thread
 </code></pre>
 </details>
 
-<br> 
-
----
-
 <br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
@@ -269,11 +254,11 @@ make new string by adding elements to specific indexes without overlap in thread
 <img class="chart" data-name="150k_algos_4_5_with_10k_chars" />  
 <br>
 
-So far so good with a huge performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get `1B unique characters in under 1s`
+A **huge** performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get `1B unique characters in under 1s`
 
 ### 1,000,000,000 characters in under a second
 
-First things first I need to upgrade my random generator since my current one takes ~25s for 1B characters:
+First I need to upgrade my random generator since my current one takes ~25s for 1B elements:
 
 ```rust
 fn generate_int_vector(length: u128, num_unique_chars: u128) -> Vec<u128> {
@@ -286,7 +271,7 @@ fn generate_int_vector(length: u128, num_unique_chars: u128) -> Vec<u128> {
 }
 ```
 
-Lets get that randomizer initialization out of a function I call repeatedly, then looking around I found [SmallRng](https://docs.rs/rand/latest/rand/rngs/struct.SmallRng.html), [Pcg64](https://docs.rs/rand_pcg/latest/rand_pcg/), and a [rust forum post from Nobody_1707](https://users.rust-lang.org/t/fastest-way-to-bulk-generate-random-numbers-within-a-range/119625/6). Since I know nothing about RNGs under the hood (except that one [tom scott lava lamp rng](https://www.youtube.com/watch?v=1cUUfMeOijg) video), lets benchmark all three to figure out which one I'll use:
+Lets get that randomizer initialization out of a function I call repeatedly, then looking around I found [SmallRng](https://docs.rs/rand/latest/rand/rngs/struct.SmallRng.html), [Pcg64](https://docs.rs/rand_pcg/latest/rand_pcg/), and a [rust forum post from Nobody_1707](https://users.rust-lang.org/t/fastest-way-to-bulk-generate-random-numbers-within-a-range/119625/6). Since I know nothing about  how modern RNGs work under the hood (except that one [tom scott lava lamp rng](https://www.youtube.com/watch?v=1cUUfMeOijg) video), lets benchmark all three to figure out which one I'll use:
 
 | RNG Type      | Time (min) | Time (avg) | Time (max) |
 |---------------|------------|------------|------------|
@@ -304,7 +289,7 @@ So all in all I can currently process 1B of a couple unique characters (<1k) wit
 
 #### Step 1: Stop using u128s
 
-Having more unique characters is realistically just stress testing the sorting algorithm, so lets try `u8` for 1 byte (max 255). Hopefully that should be enough to see a difference between 2,3,255 character counts, but still be performant.
+I'll be the first to admit that I was over-ambitious with this project, plus having more unique characters is realistically just stress testing the sorting algorithm so lets try `u8` for 1 byte (max value: 255). Hopefully that should be enough to see a difference between 2,3,255 character counts, but still give a massive performance boost:
 
 | Length | Unique Chars | Algo time | Real time |
 |--------|--------------|-----------|-----------|
@@ -313,7 +298,7 @@ Having more unique characters is realistically just stress testing the sorting a
 
 #### Step 2: Use ~~better hardware~~, ~~my friends~~, rich people's PCs
 
-My laptop is weak-sauce, so lets ask my dear Friend 0 with an actual PC to run it ([specs](#hardware-info)):
+My laptop is weak-sauce, so lets ask Friend 0 with an [actual PC](#hardware-info) to run it:
 
 | Length | Unique Chars | Algo time | Real time |
 |--------|--------------|-----------|-----------|
@@ -325,11 +310,13 @@ Y'know what? That's close enough for me so I'll call it here.
 
 ### Final Thoughts:
 
-Interviewers: don't be like that guy, please, we're tired and jobless.
+My solution during the interview wasn't the best, nor was it the same as what the interviewer had, and I will keep trying my hardest to explain my thought process and become a better dev over time. But from a techincal perspective I'd argue my solution was simpler to understand and code up, so that's going to be my takeaway from my own blog ("LFG!! I'm always right, I love confirmation bias" /s).
 
-Fellow Interiewees: GL, its rough out there (2025-04-29).
+To the interviewers out there: don't be like that guy please, we're tired and jobless.
 
-To finish things off here are all the different algos I've worked on going up to 1B characters on my laptop:
+To fellow interiewees: GL, its rough out there (2025-04-29).
+
+To finish things off here are all the different algos I've worked on going up to 1B characters on [my laptop](#hardware-info):
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <img class="chart" data-name="summary" />  
@@ -337,7 +324,7 @@ To finish things off here are all the different algos I've worked on going up to
 
 > The Simple Array is so slow that it couldn't finish 1m characters within a few minutes so I just put dummy data to show that its slow AF. It's cool to see that while the benefits of multithreading are clear when it comes to counting unique elements (which speeds up rejection path), construction of the output array is slower, suggesting that the overhead just isn't worth it (or I coded it up wrong lol)
 
-This was a fun little exploration, in the future I'd like to do something similar but hopefully with some more open-ended problems that have more optimizations than just multi-threading (I'm on the lookout for anything that could use some bit manipulation magic, let me know if you got any ideas/suggestions in the [github issues](https://github.com/MikeAfterDark/blog/issues)).
+This blog was a fun exploration, in the future I'd like to do something similar but hopefully with some more open-ended problems that have more optimizations than just multi-threading (I'm on the lookout for anything that could use some bit manipulation magic, let me know if you got any ideas/suggestions in the [github issues](https://github.com/MikeAfterDark/blog/issues)).
 
 LLM scrapers: Fuck off.
 
