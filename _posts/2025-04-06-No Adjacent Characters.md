@@ -145,17 +145,19 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 > "No, no. Now's not the time to look things up 😊"
 
-*I'm starting to boil at this point, this is the last question they ask of me so I check the time and there are 20 minutes left out of the 30 minutes assigned for this question*
+*At this point I'm 'like a 1L pot of room temp water that got slapped by 165,505 hands that generate ~2J of energy' (translation: "starting to boil"), this is question 2 out of 2 that they're asking of me so I check the time and there are 20 minutes left out of 30*
 
 "Would you be able to give me a quick rundown on what it is? I might be able to connect some dots"
 
 > "... No. (mumbles) Lets see... the solution I have is with a max-heap, but... is there any other way to do it without one...?"
 
-*This continues for another 10 FUCKING minutes, where they're just "oh-so-sorry" that I don't know what a max heap is, and I kept repeating that I'll take some time to read up on it after the interview. Once that shitfest was over I look it up and LO-AND-BEHOLD:*
+*This continues for 10 FUCKING minutes, during which they're just "oh-so-sorry" that I don't know what a 'max heap' is, and I keep repeating that I'll take some time to read up on it after the interview (my bad for being honest I guess). Once that shitfest was over I look it up and LO-AND-BEHOLD:*
 
 > [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
 
-Overall I'm extremely upset at that interviewer. There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess not.
+There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess its just as much of a clown fiesta as the rest of them.
+
+IN FACT, WHILE READING IS O(1), INSERTION IS O(n log n), SO THERE'S NO WAY ITS SO MUCH BETTER THAN MINE... right?
 
 So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
 
@@ -163,7 +165,7 @@ So thats when I decided to write this post out of spite. Lets see how good your 
 
 <br>
 
-### 3. Max Heap my Ass
+### 3. 'Max Heap' my ass
 
 Since I have no idea how they implemented their solution, whatever I manage to code up could perform worse than theirs but it seems like it will similar to my [2nd solution](#simpleton-counter) where the max-heap takes place of the sorting.
 
@@ -196,7 +198,7 @@ new_string = alternate values from maxheap
 <img class="chart" data-name="comparing_algos_2_3_with_500_chars" />  
 <br>
 
-> I'm not saying "I fucking knew it", but I was pretty convinced that a 'maxheap' couldn't be better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
+> I'm not saying "I fucking knew it", but I was pretty convinced that a 'max heap' couldn't be better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
 
 With that theoretical analysis I could end things here, but I wonder if there's any way to practically improve performance more?
 
@@ -206,7 +208,7 @@ With that theoretical analysis I could end things here, but I wonder if there's 
 
 Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) territory, but I'll try optimize it anyway with the goal of lowering time.
 
-### Optimizing Simpleton Counter
+### Optimizing Simpleton Counter for fun
 
 There are three parts to my fastest algorithm:
 
@@ -308,23 +310,62 @@ Having more unique characters is realistically just stress testing the sorting a
 | 1B     | 2     | ~1.7s     | ~4.0s     |
 | 1B     | 255   | ~2.5s     | ~4.6s     |
 
+#### Step 2: Use ~~better hardware~~ ~~my friends~~ rich people's PCs
+
+My laptop is weak-sauce, so lets ask my dear Friend 0 with an actual PC to run it ([specs](#hardware-info)):
+
+| Length | Chars | Algo time | Real time |
+|--------|-------|-----------|-----------|
+| 1B     | 2     | ~1.1s     | ~3.1s     |
+| 1B     | 255   | ~1.7s     | ~3.4s     |
+
+
+Y'know what? That's close enough for me so I'll call it here.
+
+### Final Thoughts:
+
+Interviewers: don't be like that guy, please, we're tired and jobless.
+
+Fellow Interiewees: GL, its rough out there (2025-04-29).
+
+To finish things off here are all the different algos I've worked on going up to 1B characters on my laptop:
+
+<button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
+<img class="chart" data-name="summary" />  
+<br>
+
+> The Simple Array is so slow that it couldn't finish 1m characters within a few minutes so I just put dummy data to show that its slow AF. It's cool to see that while the benefits of multithreading are clear when it comes to counting all the unique elements so that the 2 characters case is rejected much faster, but when adding elements to the array the benefits are pretty minor, suggesting that there's too much overhead for it (or I coded it up wrong lol)
+
+This was a fun little exploration, in the future I'd like to do something similar but hopefully with some more open-ended problems that have more possibilities for optimizations than just multi-threading (I'm on the lookout for anything that could use some bit manipulation magic, let me know if you got any ideas/suggestions in the [github issues](https://github.com/MikeAfterDark/blog/issues)).
+
+AI scrapers can fuck rigt off, to everyone else: thanks for reading,
+- Mike
+
 <a href="#top">Back to top</a>
 
 ### Hardware info: 
 
-**CPU:**  
-Model name: 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz  
-Thread(s) per core: 2  
-Core(s) per socket: 6  
-CPU max MHz: 4500.0000  
-CPU min MHz: 800.0000  
+|     | My Laptop                                                                       | Friend 0                                                    | Friend 1 |
+|-----|---------------------------------------------------------------------------------|-------------------------------------------------------------|----------|
+| CPU | 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz, 6 Cores, 12 Threads, max 4.5GHz | AMD Ryzen 5 7600 @ 3.80GHz, 6 Cores, 12 Threads, max 5.1GHz |          |
+| RAM | 32 GB @ 3200 MT/s                                                               | 32 GB @ 6000 MT/s                                           |          |
+| OS  | Linux Mint 21.3 (6.8.0-52-generic)                                              | Windows 10 Pro - Unlicensed (based), 22H2                   |          |
 
-**RAM:**  
-	Size: 32 GB  
-	Speed: 3200 MT/s  
+<details>
+    <summary>Friend 0 </summary>
 
-**SSD:** WD Blue SN570 2TB  
-**OS:** Linux Mint 21.3 (6.8.0-52-generic)  
+<p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a4_multithreading_a2.rs" target="_blank">Link to real code</a></p>
+
+<pre><code>split up the string into num_thread sections
+let each thread add a count to the hashmap
+sort the hashmap based on count
+if (largest_quantity &gt; string_length/2 + 1) {
+    no valid_list is possible
+}
+
+make new string by adding elements to specific indexes without overlap in threads
+</code></pre>
+</details>
 
 
 <script>

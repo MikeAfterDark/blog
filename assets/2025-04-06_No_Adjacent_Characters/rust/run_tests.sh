@@ -115,7 +115,9 @@ generate_chart() {
 # generate_chart 500 150k_algos_4_5_with_500_chars 4 150000 5 150000
 # generate_chart 10000 150k_algos_4_5_with_10k_chars 4 150000 5 150000
 #
-generate_chart 2 150k_algos_3_5_with_2_chars 3 150000 5 150000
-generate_chart 3 150k_algos_3_5_with_3_chars 3 150000 5 150000
-generate_chart 500 150k_algos_3_5_with_500_chars 3 150000 5 150000
-generate_chart 10000 150k_algos_3_5_with_10k_chars 3 150000 5 150000
+# generate_chart 2 150k_algos_3_5_with_2_chars 3 150000 5 150000
+# generate_chart 3 150k_algos_3_5_with_3_chars 3 150000 5 150000
+# generate_chart 500 150k_algos_3_5_with_500_chars 3 150000 5 150000
+# generate_chart 10000 150k_algos_3_5_with_10k_chars 3 150000 5 150000
+
+python3 ./results/plot_summary.py ./results/charts
