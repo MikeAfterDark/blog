@@ -1,12 +1,11 @@
-> All hardware and software I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://github.com/MikeAfterDark/blog/tree/main/assets/2025-04-06_No_Adjacent_Characters/rust)
+> All [hardware and software](#hardware-info) I'm running my tests on are listed at the bottom of the blog, all code is hosted on [the github repo](https://github.com/MikeAfterDark/blog/tree/main/assets/2025-04-06_No_Adjacent_Characters/rust)
 
 I've recently had the pleasure to interview with a company that rhymes with galazon, also known as the company who tried to get people with really good eyesight to guess what items people picked up from [a store with no cashiers](https://www.cnn.com/2024/04/03/business/amazons-self-checkout-technology-grocery-flop/index.html), and one of the briliant questions went something like this:
 
 > "Given a string, return a new string in which no two adjacent characters are the same."  
 > Ex: xyzzz ➡ zxzyz
 
-Short and sweet, I was feeling confident, I had a pre-interview medium leetcode to warm up, should be ez:
-
+Short, sweet, and I was feeling confident. I solved one pre-interview medium leetcode to warm up, so this should be easy:
 
 ---
 
@@ -14,7 +13,7 @@ Short and sweet, I was feeling confident, I had a pre-interview medium leetcode 
 
 ### Simpleton Thicc Array
 
-To appease the interviewer, I had an answer within 20 seconds of reading the question, slightly inspired by my uni's combinatorics class:
+I had an idea within 20 seconds of reading the question, slightly inspired by my uni's combinatorics class that went something like this:
 
 ```
 xyzzz
@@ -33,7 +32,7 @@ zxxyxzz
 |-> x z y x z x z _ _ _ _ _ _ _ _
 ```
 
-It's foolproof! The first thing I think of is _obviously_ the best solution /s. I mentioned that it seemed like O(n) runtime [Spoiler: it wasn't] and O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
+It's foolproof! The first thing I think of is _obviously_ the best solution /s. I mentioned that it seemed like O(n) runtime **(Spoiler: it wasn't) and O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
 
 <details>
     <summary>Code</summary>
@@ -98,7 +97,7 @@ For testing data I went with the following:
 
 - Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% possible valid list rate
 - Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
-- Character limit testing: N characters, 500 unique characters, ~100.000% possible valid list rate
+- Character limit testing: N characters, 255/500 unique characters, ~100.000% possible valid list rate
 
 <br>
 
@@ -113,11 +112,13 @@ For testing data I went with the following:
 
 > Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n, n)
 
-Having implemented my solution in bastardized C# pseudocode for the interviewer, I was pretty happy and ready to move on. Then it all started falling apart when the interviewer unmuted
+Having implemented my solution in bastardized C# pseudocode, I was pretty happy and ready to move on. But then it all started falling apart when the interviewer unmuted...
 
 ---
 
-### [Great Expectations](https://www.youtube.com/watch?v=O5QIGFKAHgk) (venting):
+<br>
+
+### [Great Expectations](https://www.youtube.com/watch?v=O5QIGFKAHgk) (venting, [skip to next section](#3-max-heap-my-ass)):
 
 > "So you wrote a `hashmap.sort()`, can you elaborate on that?"
 
@@ -139,7 +140,7 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 "Nope, first time I'm hearing about those, I could try see if I can figure it out in a few minutes if you'd like?"
 
-> "No, no. Now's not the time to look things up 😊"
+> "No, no. Now's not the time to look things up 😊, not during an interview. 😊"
 
 *At this point I'm 'like a 1L pot of room temp water that got slapped by 165,505 hands that generate ~2J of energy' (translation: "starting to boil"), this is question 2 out of 2 that they're asking of me so I check the time and there are 20 minutes left out of 30*
 
@@ -147,13 +148,13 @@ Having implemented my solution in bastardized C# pseudocode for the interviewer,
 
 > "... No. (mumbles) Lets see... the solution I have is with a max-heap, but... is there any other way to do it without one...?"
 
-*This continues for 10 FUCKING minutes, during which they're just "oh-so-sorry" that I don't know what a 'max heap' is, and I keep repeating that I'll take some time to read up on it after the interview (my bad for being honest I guess). Once that shitfest was over I look it up and LO-AND-BEHOLD:*
+*This continues for 10 FUCKING minutes, during which they're just "oh-so-sorry" that I don't know what a 'max heap' is, and I keep repeating that I'll take some time to read up on it after the interview (sorry for being honest). Once that shitfest was over I look it up and LO-AND-BEHOLD:*
 
 > [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
 
-There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 tech company would have the interview process figured out but I guess its just as much of a clown fiesta as the rest of them.
+There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 [2025-04-30] tech company would have the interview process figured out but I guess its just as much of a clown fiesta as everywhere else.
 
-IN FACT, WHILE READING IS O(1), INSERTION IS O(n log n), SO THERE'S NO WAY ITS SO MUCH BETTER THAN MINE... right?
+IN FACT, WHILE READING FROM IT IS O(1), INSERTION IS O(n log n), SO THERE'S NO WAY ITS SO MUCH BETTER THAN MINE... right?
 
 So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
 
@@ -190,13 +191,15 @@ new_string = alternate values from maxheap
 <img class="chart" data-name="150k_algos_2_3_with_500_chars" />  
 <br>
 
-> I'm not saying "I fucking knew it", but I was pretty convinced that a 'max heap' couldn't be better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
+> I'm not saying "I fucking knew it", but I was pretty convinced that a 'max heap' couldn't be so much better than my solution, with the O(n log n) tree shuffling going on during insertion it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical, undeniable proof that the interviewer was spewing bullshit.
 
-With that theoretical analysis I could end things here, but I wonder if there's any way to practically improve performance more?
+With that rigorous analysis done I could end things here, but I wonder if there's any way to practically improve performance more?
 
-Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) territory, but I'll try optimize it anyway with the goal of lowering time.
+Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) (where n = num elements, k = num unique elements) territory, but I'll try optimize it anyway with the goal of lowering time.
 
 ---
+
+<br>
 
 ### Optimizing Simpleton Counter for fun
 
@@ -219,7 +222,7 @@ Lets grab the lowest hanging fruit and multi-thread this bitch.
 
 <p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a4_multithreading_a2.rs" target="_blank">Link to real code</a></p>
 
-<pre><code>split up the string into num_thread sections
+<pre><code>split up the array into num_thread sections
 let each thread add a count to the hashmap
 sort the hashmap based on count
 if (largest_quantity &gt; string_length/2 + 1) {
@@ -229,8 +232,6 @@ if (largest_quantity &gt; string_length/2 + 1) {
 make new string by adding elements to specific indexes without overlap in threads
 </code></pre>
 </details>
-
-<br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <img class="chart" data-name="150k_algos_2_4_with_2_chars" />  
@@ -242,7 +243,7 @@ make new string by adding elements to specific indexes without overlap in thread
 <img class="chart" data-name="150k_algos_2_4_with_10k_chars" />  
 <br>
 
-> Its glorious, even with my [low-tier laptop CPU](#hardware-info) that only has 12 threads, multi-threading overtakes single threading really quickly, especially on string with fewer unique-characters. I suspect that the amount of unique-characters is mostly impacting the final string construction after sorting, so lets try without multi-threading the new string construction:
+> Its glorious, even with my [low-tier laptop CPU](#hardware-info) that only has 12 threads, multi-threading overtakes single threading really quickly, especially on an array with fewer unique-characters where a fast rejection is really noticeable. I've got a gut feeling that the number of unique-characters is mostly impacting the final string construction after sorting, so lets try without multi-threading the new string construction:
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <img class="chart" data-name="150k_algos_4_5_with_2_chars" />  
@@ -254,9 +255,9 @@ make new string by adding elements to specific indexes without overlap in thread
 <img class="chart" data-name="150k_algos_4_5_with_10k_chars" />  
 <br>
 
-A **huge** performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get `1B unique characters in under 1s`
+A **huge** performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get
 
-### 1,000,000,000 characters in under a second
+### 1,000,000,000 characters in <1s
 
 First I need to upgrade my random generator since my current one takes ~25s for 1B elements:
 
@@ -283,13 +284,13 @@ Ahoy [PCG64Mcg](https://rust-random.github.io/rand/rand_pcg/type.Pcg64Mcg.html).
 
 A quick little test run of the new 'PCG64McgRNG' (say that 10 times fast), generates an initial 1B length array of u128s in ~8s. 
 
-> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because turns it out that I was overly ambitious with using u128 for the unique characters, and u128s are 16 bytes long... so having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place. I've had to refactor and re-compute data for all the charts so that all the algorithms modified the existing input array instead of trying to allocate 2 or even 3 arrays, oops. 
+> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because I was using u128 for the unique characters, and u128s are 16 bytes long... so having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place... oops. 
 
-So all in all I can currently process 1B of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s, I need a 32x improvement.
+So I can barely process 1B of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s, I want an approx 32x improvement.
 
 #### Step 1: Stop using u128s
 
-I'll be the first to admit that I was over-ambitious with this project, plus having more unique characters is realistically just stress testing the sorting algorithm so lets try `u8` for 1 byte (max value: 255). Hopefully that should be enough to see a difference between 2,3,255 character counts, but still give a massive performance boost:
+I'll admit that I was over-ambitious with this project, plus having more unique characters is realistically just stress testing the sorting algorithm so lets try `u8` for 1 byte (max value: 255). Hopefully that should be enough to see a difference between 2,3,255 character counts, but still give a massive performance boost:
 
 | Length | Unique Chars | Algo time | Real time |
 |--------|--------------|-----------|-----------|
@@ -310,7 +311,7 @@ Y'know what? That's close enough for me so I'll call it here.
 
 ### Final Thoughts:
 
-My solution during the interview wasn't the best, nor was it the same as what the interviewer had, and I will keep trying my hardest to explain my thought process and become a better dev over time. But from a techincal perspective I'd argue my solution was simpler to understand and code up, so that's going to be my takeaway from my own blog ("LFG!! I'm always right, I love confirmation bias" /s).
+My solution during the interview wasn't the best, nor was it the same as what the interviewer had used, and I will keep trying my hardest to explain my thought process and become a better dev over time. But from a techincal perspective I'd argue my solution was simpler to understand and program so its better for an interview solution, and that's going to be my takeaway from my own blog (LFG!! I'm always right, I love self-confirmation bias /s).
 
 To the interviewers out there: don't be like that guy please, we're tired and jobless.
 
