@@ -47,9 +47,13 @@ generate_chart() {
 #
 # generate_data 1 1000 2
 # generate_data 1 1200 3
-# generate_data 1 1800 500
+# generate_data 1 2000 255
 #
 # echo "finished all 1's: $(date)"
+#
+# generate_data 2 1000 2
+# generate_data 2 1200 3
+# generate_data 2 2000 255
 #
 # generate_data 2 150000 2
 # generate_data 2 150000 3
@@ -83,9 +87,9 @@ generate_chart() {
 # Syntax:
 # generate_chart #chars filename algoIndex length algoIndex length... etc
 
-# generate_chart 2 1 1000 2 20000
-# generate_chart 3 1 1200 2 15000
-# generate_chart 500 1 1800 2 10000
+# generate_chart 2 comparing_algos_1_2_with_2_chars 1 1000 2 1000
+# generate_chart 3 comparing_algos_1_2_with_3_chars 1 1200 2 1200
+# generate_chart 255 comparing_algos_1_2_with_255_chars 1 2000 2 2000
 
 # generate_chart 2 comparing_algos_2_3_with_2_chars 2 20000 3 20000
 # generate_chart 3 comparing_algos_2_3_with_3_chars 2 15000 3 15000
@@ -120,4 +124,4 @@ generate_chart() {
 # generate_chart 500 150k_algos_3_5_with_500_chars 3 150000 5 150000
 # generate_chart 10000 150k_algos_3_5_with_10k_chars 3 150000 5 150000
 
-python3 ./results/plot_summary.py ./results/charts
+# python3 ./results/plot_summary.py ./results/charts

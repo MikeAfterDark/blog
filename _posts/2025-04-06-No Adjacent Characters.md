@@ -110,11 +110,12 @@ For testing data I went with the following:
 
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
-<img class="chart" data-name="2_chars" />  
+
+<img class="chart" data-name="comparing_algos_1_2_with_2_chars" />  
 <br>
-<img class="chart" data-name="3_chars" />  
+<img class="chart" data-name="comparing_algos_1_2_with_3_chars" />  
 <br>
-<img class="chart" data-name="500_chars" />  
+<img class="chart" data-name="comparing_algos_1_2_with_255_chars" />  
 <br>
 
 > Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n, n)
@@ -191,11 +192,11 @@ new_string = alternate values from maxheap
 <br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
-<img class="chart" data-name="comparing_algos_2_3_with_2_chars" />  
+<img class="chart" data-name="150k_algos_2_3_with_2_chars" />  
 <br>
-<img class="chart" data-name="comparing_algos_2_3_with_3_chars" />  
+<img class="chart" data-name="150k_algos_2_3_with_3_chars" />  
 <br>
-<img class="chart" data-name="comparing_algos_2_3_with_500_chars" />  
+<img class="chart" data-name="150k_algos_2_3_with_500_chars" />  
 <br>
 
 > I'm not saying "I fucking knew it", but I was pretty convinced that a 'max heap' couldn't be better than my solution, with the O(n log n) tree shuffling going on it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical proof that the interviewer was spewing bullshit.
@@ -247,25 +248,25 @@ make new string by adding elements to specific indexes without overlap in thread
 <br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
-<img class="chart" data-name="comparing_algos_2_4_with_2_chars_all_100k" />  
+<img class="chart" data-name="150k_algos_2_4_with_2_chars" />  
 <br>
-<img class="chart" data-name="comparing_algos_2_4_with_3_chars_all_100k" />  
+<img class="chart" data-name="150k_algos_2_4_with_3_chars" />  
 <br>
-<img class="chart" data-name="comparing_algos_2_4_with_500_chars_all_100k" />  
+<img class="chart" data-name="150k_algos_2_4_with_500_chars" />  
 <br>
-<img class="chart" data-name="comparing_algos_2_4_with_10k_chars_all_100k" />  
+<img class="chart" data-name="150k_algos_2_4_with_10k_chars" />  
 <br>
 
 > Its glorious, even with my [low-tier laptop CPU](#hardware-info) that only has 12 threads, multi-threading overtakes single threading really quickly, especially on string with fewer unique-characters. I suspect that the amount of unique-characters is mostly impacting the final string construction after sorting, so lets try without multi-threading the new string construction:
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
-<img class="chart" data-name="compare 4 5, 2 chars" />  
+<img class="chart" data-name="150k_algos_4_5_with_2_chars" />  
 <br>
-<img class="chart" data-name="compare 4 5, 3 chars" />  
+<img class="chart" data-name="150k_algos_4_5_with_3_chars" />  
 <br>
-<img class="chart" data-name="compare 4 5, 500 chars" />  
+<img class="chart" data-name="150k_algos_4_5_with_500_chars" />  
 <br>
-<img class="chart" data-name="compare 4 5, 10k chars" />  
+<img class="chart" data-name="150k_algos_4_5_with_10k_chars" />  
 <br>
 
 So far so good with a huge performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get `1B unique characters in under 1s`
@@ -295,29 +296,29 @@ Lets get that randomizer initialization out of a function I call repeatedly, the
 
 Ahoy [PCG64Mcg](https://rust-random.github.io/rand/rand_pcg/type.Pcg64Mcg.html). I've got no idea what it is or how it works cuz 'linear congruential generator as the state-transition function', 'permutation functions on tuples' sounds like some math wizardry that I ain't gonna argue with. I'll leave the understanding part as an exercise for the reader: [PCG website](https://www.pcg-random.org/index.html), [Wikipedia](https://en.wikipedia.org/wiki/Permuted_congruential_generator)
 
-A quick little test run of the new PCG64McgRNG (say that 10 times fast), generates us an initial 1B length string in ~8s. 
+A quick little test run of the new 'PCG64McgRNG' (say that 10 times fast), generates an initial 1B length array of u128s in ~8s. 
 
-> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because turns it out that I was overly ambitious with using u128 for the unique characters, and u128s are 16 bytes long... so having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place. I've had to refactor and re-compute data for all the charts so that all the algorithms modified the existing input array instead of trying to allocate 2 or even 3 arrays, oops. The sad thing is that this problem doesn't go away as my 'counting' method requires a separate array... which would use up a lot of RAM if I had 1B unique characters.
+> Sidenote: While trying to get 1B chars processed my poor program got 'Killed' repeatedly by my OS because turns it out that I was overly ambitious with using u128 for the unique characters, and u128s are 16 bytes long... so having 1,000,000,000 * 16bytes = 16 **GB** of data, which I was duplicating and creating new 16 GB lists all over the place. I've had to refactor and re-compute data for all the charts so that all the algorithms modified the existing input array instead of trying to allocate 2 or even 3 arrays, oops. 
 
-So all together I can currently process a 1B array of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s, I need a 32x improvement.
+So all in all I can currently process 1B of a couple unique characters (<1k) within: 8s+5s = 13s, and a max 1B array of 1M unique characters within 8s+24s = 32s, I need a 32x improvement.
 
 #### Step 1: Stop using u128s
 
 Having more unique characters is realistically just stress testing the sorting algorithm, so lets try `u8` for 1 byte (max 255). Hopefully that should be enough to see a difference between 2,3,255 character counts, but still be performant.
 
-| Length | Chars | Algo time | Real time |
-|--------|-------|-----------|-----------|
-| 1B     | 2     | ~1.7s     | ~4.0s     |
-| 1B     | 255   | ~2.5s     | ~4.6s     |
+| Length | Unique Chars | Algo time | Real time |
+|--------|--------------|-----------|-----------|
+| 1B     | 2            | ~1.7s     | ~4.0s     |
+| 1B     | 255          | ~2.5s     | ~4.6s     |
 
-#### Step 2: Use ~~better hardware~~ ~~my friends~~ rich people's PCs
+#### Step 2: Use ~~better hardware~~, ~~my friends~~, rich people's PCs
 
 My laptop is weak-sauce, so lets ask my dear Friend 0 with an actual PC to run it ([specs](#hardware-info)):
 
-| Length | Chars | Algo time | Real time |
-|--------|-------|-----------|-----------|
-| 1B     | 2     | ~1.1s     | ~3.1s     |
-| 1B     | 255   | ~1.7s     | ~3.4s     |
+| Length | Unique Chars | Algo time | Real time |
+|--------|--------------|-----------|-----------|
+| 1B     | 2            | ~1.1s     | ~3.1s     |
+| 1B     | 255          | ~1.7s     | ~3.4s     |
 
 
 Y'know what? That's close enough for me so I'll call it here.
@@ -334,39 +335,25 @@ To finish things off here are all the different algos I've worked on going up to
 <img class="chart" data-name="summary" />  
 <br>
 
-> The Simple Array is so slow that it couldn't finish 1m characters within a few minutes so I just put dummy data to show that its slow AF. It's cool to see that while the benefits of multithreading are clear when it comes to counting all the unique elements so that the 2 characters case is rejected much faster, but when adding elements to the array the benefits are pretty minor, suggesting that there's too much overhead for it (or I coded it up wrong lol)
+> The Simple Array is so slow that it couldn't finish 1m characters within a few minutes so I just put dummy data to show that its slow AF. It's cool to see that while the benefits of multithreading are clear when it comes to counting unique elements (which speeds up rejection path), construction of the output array is slower, suggesting that the overhead just isn't worth it (or I coded it up wrong lol)
 
-This was a fun little exploration, in the future I'd like to do something similar but hopefully with some more open-ended problems that have more possibilities for optimizations than just multi-threading (I'm on the lookout for anything that could use some bit manipulation magic, let me know if you got any ideas/suggestions in the [github issues](https://github.com/MikeAfterDark/blog/issues)).
+This was a fun little exploration, in the future I'd like to do something similar but hopefully with some more open-ended problems that have more optimizations than just multi-threading (I'm on the lookout for anything that could use some bit manipulation magic, let me know if you got any ideas/suggestions in the [github issues](https://github.com/MikeAfterDark/blog/issues)).
 
-AI scrapers can fuck rigt off, to everyone else: thanks for reading,
-- Mike
+LLM scrapers: Fuck off.
+
+To everyone else: Thanks for reading.
+
+Mike
 
 <a href="#top">Back to top</a>
 
 ### Hardware info: 
 
-|     | My Laptop                                                                       | Friend 0                                                    | Friend 1 |
-|-----|---------------------------------------------------------------------------------|-------------------------------------------------------------|----------|
-| CPU | 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz, 6 Cores, 12 Threads, max 4.5GHz | AMD Ryzen 5 7600 @ 3.80GHz, 6 Cores, 12 Threads, max 5.1GHz |          |
-| RAM | 32 GB @ 3200 MT/s                                                               | 32 GB @ 6000 MT/s                                           |          |
-| OS  | Linux Mint 21.3 (6.8.0-52-generic)                                              | Windows 10 Pro - Unlicensed (based), 22H2                   |          |
-
-<details>
-    <summary>Friend 0 </summary>
-
-<p><a href="https://github.com/MikeAfterDark/blog/blob/main/assets/2025-04-06_No_Adjacent_Characters/rust/src/a4_multithreading_a2.rs" target="_blank">Link to real code</a></p>
-
-<pre><code>split up the string into num_thread sections
-let each thread add a count to the hashmap
-sort the hashmap based on count
-if (largest_quantity &gt; string_length/2 + 1) {
-    no valid_list is possible
-}
-
-make new string by adding elements to specific indexes without overlap in threads
-</code></pre>
-</details>
-
+|     | My Laptop                                                                       | Friend 0                                                    |
+|-----|---------------------------------------------------------------------------------|-------------------------------------------------------------|
+| CPU | 11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz, 6 Cores, 12 Threads, max 4.5GHz | AMD Ryzen 5 7600 @ 3.80GHz, 6 Cores, 12 Threads, max 5.1GHz |
+| RAM | 32 GB @ 3200 MT/s                                                               | 32 GB @ 6000 MT/s                                           |
+| OS  | Linux Mint 21.3 (6.8.0-52-generic)                                              | Windows 10 Pro - Unlicensed (based), 22H2                   |
 
 <script>
 function applyTheme(mode) {
