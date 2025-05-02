@@ -32,7 +32,7 @@ zxxyxzz
 |-> x z y x z x z _ _ _ _ _ _ _ _
 ```
 
-It's foolproof! The first thing I think of is _obviously_ the best solution /s. I mentioned that it seemed like O(n) runtime **(Spoiler: it wasn't) and O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
+It's foolproof! The first thing I think of is _obviously_ the best solution /s. I mentioned that it seemed like O(n) runtime _(Spoiler: it wasn't)_ and O(2n) memory, not great (for the rest of the blog I'll be using O(n, 2n) notation for O(runtime, memory).)
 
 <details>
     <summary>Code</summary>
@@ -71,7 +71,7 @@ xyzzz
 
 ```
 
-A hashmap would do the trick, O(n, n), still ain't great but its simple and can use basic stdlib implementations of hashmap and sorting so no issues there. Lets try it out and see how it goes (lets do both for the heck of it)
+A hashmap would do the trick, O(n log n, n), still ain't great but its simple and can use basic stdlib implementations of hashmap and sorting so no issues there. Lets try it out and see how it goes (lets do both for the heck of it)
 
 <details>
     <summary>Code</summary>
@@ -97,12 +97,11 @@ For testing data I went with the following:
 
 - Failure Testing: N characters, 2 unique characters (ex: A,B), ~3% possible valid list rate
 - Success Testing: N characters, 3 unique characters (ex: A,B,C) ~99% possible valid list rate
-- Character limit testing: N characters, 255/500 unique characters, ~100.000% possible valid list rate
+- Character limit testing: N characters, 255+ unique characters, ~100.000% possible valid list rate
 
 <br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
-
 <img class="chart" data-name="comparing_algos_1_2_with_2_chars" />  
 <br>
 <img class="chart" data-name="comparing_algos_1_2_with_3_chars" />  
@@ -110,29 +109,31 @@ For testing data I went with the following:
 <img class="chart" data-name="comparing_algos_1_2_with_255_chars" />  
 <br>
 
-> Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n, n)
+> Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n log n, n)
 
-Having implemented my solution in bastardized C# pseudocode, I was pretty happy and ready to move on. But then it all started falling apart when the interviewer unmuted...
+With a plan in mind, I slapped together some text in that could generously be called 'C# pseudocode', feeling satisfied I was ready to move on-
+
+they unmuted.
 
 ---
 
 <br>
 
-### [Great Expectations](https://www.youtube.com/watch?v=O5QIGFKAHgk) (venting, [skip to next section](#3-max-heap-my-ass)):
+### [Great Expectations](https://www.youtube.com/watch?v=O5QIGFKAHgk) (vent, [skip section](#3-max-heap-my-ass)):
 
 > "So you wrote a `hashmap.sort()`, can you elaborate on that?"
 
-"Yea of course, I'd use a standard library hashmap and they all have some kind of sorting method already implemented so that's what I'm using, probably O(n log n)"
+"Yea, of course, I'd use a standard library hashmap and they all have some kind of sorting method already implemented so that's what I'm using, probably O(n log n)"
 
 > "But what do you mean sort? What sorting function are you using? can you elaborate??"
 
-*I wasn't sure if my mic wasn't picking up or if it was a missunderstanding*
+<table><tr><td>I wasn't sure if my mic wasn't picking up or if it was a missunderstanding</td></tr></table>
 
 "Its likely going to be using some sort of quick-sort or radix-sort? I could quickly look up which one its using in this specific C# `HashSet<T>` context if you'd like. Just to be clear I'm sorting the char counts so they're ints with an O(n log n) or O(nk). Or would you like me to implement a sorting algorithm? I haven't looked at them in years so I can only promise to implement bubble-sort without looking things up"
 
 > "Yes, yes, elaborate"
 
-*I'm at my wits end because I'm pretty sure there was an OR in my reply*
+<table><tr><td>I'm at my wits end because I'm pretty sure there was an OR in my reply</td></tr></table>
 
 "Ok, so I'll start writing bubble-sort for sorting the counts of each character in the HashSet, alright?"
 
@@ -142,19 +143,21 @@ Having implemented my solution in bastardized C# pseudocode, I was pretty happy 
 
 > "No, no. Now's not the time to look things up 😊, not during an interview. 😊"
 
-*At this point I'm 'like a 1L pot of room temp water that got slapped by 165,505 hands that generate ~2J of energy' (translation: "starting to boil"), this is question 2 out of 2 that they're asking of me so I check the time and there are 20 minutes left out of 30*
+<table><tr><td>At this point I'm 'like a 1L pot of room temp water that got slapped by 165,505 hands that generate ~2J of energy' (translation: "starting to boil"), this is question 2 out of 2 that they're asking of me so I check the time and there are 20 minutes left out of 30</td></tr></table>
 
 "Would you be able to give me a quick rundown on what it is? I might be able to connect some dots"
 
 > "... No. (mumbles) Lets see... the solution I have is with a max-heap, but... is there any other way to do it without one...?"
 
-*This continues for 10 FUCKING minutes, during which they're just "oh-so-sorry" that I don't know what a 'max heap' is, and I keep repeating that I'll take some time to read up on it after the interview (sorry for being honest). Once that shitfest was over I look it up and LO-AND-BEHOLD:*
+...
+
+This continues on for 10 FUCKING minutes, during which they're just "oh-so-sorry" that I don't know what a 'max heap' is, and I keep repeating that I'll take some time to read up on it after the interview (sorry for being honest). Once that shitfest was over I look it up and LO-AND-BEHOLD:
 
 > [A Max Heap](https://en.wikipedia.org/wiki/Min-max_heap) is a complete binary tree in which the value of a node is greater than or equal to the values of its children. It has an O(n log n) insertion complexity due to tree shuffling
 
-There was plenty of time to find out or mention that its a simple binary tree with an extra rule, and it was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 [2025-04-30] tech company would have the interview process figured out but I guess its just as much of a clown fiesta as everywhere else.
+It took me 17 seconds (I checked) to find out that its a simple binary tree with an extra rule. This was a golden opportunity for them to see how someone in the 'SWE1 New Grad Interview' pipeline would show a capacity for learning and adapting quickly. Maybe I had my hopes up too high that an S&P 4 [as of 2025-04-30] tech company would have the interview process figured out but I guess its just as much of a clown fiesta as everywhere else.
 
-IN FACT, WHILE READING FROM IT IS O(1), INSERTION IS O(n log n), SO THERE'S NO WAY ITS SO MUCH BETTER THAN MINE... right?
+IN FACT, AS I WAS READING REALIZED THAT WHILE READING FROM A MAX HEAP IS O(1), INSERTION IS O(n log n), SO THERE'S NO WAY ITS SO MUCH BETTER THAN MINE... right?
 
 So thats when I decided to write this post out of spite. Lets see how good your fucking 'max heap' is.
 
@@ -190,12 +193,14 @@ new_string = alternate values from maxheap
 <br>
 <img class="chart" data-name="150k_algos_2_3_with_500_chars" />  
 <br>
+<img class="chart" data-name="150k_algos_2_3_with_10k_chars" />  
+<br>
 
-> I'm not saying "I fucking knew it", but I was pretty convinced that a 'max heap' couldn't be so much better than my solution, with the O(n log n) tree shuffling going on during insertion it should've been roughly the same or worse, and assuming I didn't mess up my implementation now I've got empirical, undeniable proof that the interviewer was spewing bullshit.
+> I'm not saying "I fucking knew it", but I was convinced that a 'max heap' couldn't be *so* much better than my solution, with the O(n log n) tree shuffling going on during insertion it should've been roughly the same or worse than just sorting a fucking array (which it was for the 10k characters case), and assuming I didn't mess up my implementation I've now got empirical, undeniable™ proof that the interviewer was spewing bullshit. \<\/rant\>
 
 With that rigorous analysis done I could end things here, but I wonder if there's any way to practically improve performance more?
 
-Looking online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) (where n = num elements, k = num unique elements) territory, but I'll try optimize it anyway with the goal of lowering time.
+Searching online I found the exact same [Leetcode question: Reorganize String](https://leetcode.com/problems/reorganize-string/), and it seems like most of the ideal solutions are in a similar O(n * k log k, n) (where n = num elements, k = num unique elements) territory, but I'll try optimize it anyway with the goal of lowering time.
 
 ---
 
@@ -203,7 +208,7 @@ Looking online I found the exact same [Leetcode question: Reorganize String](htt
 
 ### Optimizing Simpleton Counter for fun
 
-There are three parts to my fastest algorithm:
+There are three parts to my [fastest algorithm](#simpleton-counter):
 
 1. Counting occurances of each element
 2. Sorting the counts
@@ -232,6 +237,8 @@ if (largest_quantity &gt; string_length/2 + 1) {
 make new string by adding elements to specific indexes without overlap in threads
 </code></pre>
 </details>
+
+<br>
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <img class="chart" data-name="150k_algos_2_4_with_2_chars" />  
@@ -351,9 +358,6 @@ function applyTheme(mode) {
         const base = "/blog/assets/2025-04-06_No_Adjacent_Characters/rust/results/charts/";
         img.src = `${base}${name}_${mode}.png`;
     });
-
-    const toggleBtn = document.getElementById("themeToggle");
-    toggleBtn.textContent = mode === "dark" ? "Lightmode(ew)" : "Darkmode(4ever)";
 }
 
 function toggleTheme() {
