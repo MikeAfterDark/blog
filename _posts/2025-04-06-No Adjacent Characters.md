@@ -107,7 +107,6 @@ For testing data I went with the following:
 <img class="chart" data-name="comparing_algos_1_2_with_3_chars" />  
 <br>
 <img class="chart" data-name="comparing_algos_1_2_with_255_chars" />  
-<br>
 
 > Now we can clearly see the [simpleton array](#simpleton-thicc-array) having a O(n^2, n) complexity while [simpleton counter](#simpleton-counter) has a nice O(n log n, n)
 
@@ -194,9 +193,8 @@ new_string = alternate values from maxheap
 <img class="chart" data-name="150k_algos_2_3_with_500_chars" />  
 <br>
 <img class="chart" data-name="150k_algos_2_3_with_10k_chars" />  
-<br>
 
-> I'm not saying "I fucking knew it", but I was convinced that a 'max heap' couldn't be *so* much better than my solution, with the O(n log n) tree shuffling going on during insertion it should've been roughly the same or worse than just sorting a fucking array (which it was for the 10k characters case), and assuming I didn't mess up my implementation I've now got empirical, undeniable™ proof that the interviewer was spewing bullshit. \<\/rant\>
+> I'm not saying "I fucking knew it", but I was convinced that a 'max heap' couldn't be *so* much better than my solution, with the O(n log n) tree shuffling going on during insertion it should've been roughly the same or worse than just sorting a fucking array (which it was for the 10k characters case), and assuming I didn't mess up my implementation I've now got empirical, undeniable™ proof that the interviewer was spewing a **heap** of bullshit. \<\rant\>
 
 With that rigorous analysis done I could end things here, but I wonder if there's any way to practically improve performance more?
 
@@ -248,9 +246,8 @@ make new string by adding elements to specific indexes without overlap in thread
 <img class="chart" data-name="150k_algos_2_4_with_500_chars" />  
 <br>
 <img class="chart" data-name="150k_algos_2_4_with_10k_chars" />  
-<br>
 
-> Its glorious, even with my [low-tier laptop CPU](#hardware-info) that only has 12 threads, multi-threading overtakes single threading really quickly, especially on an array with fewer unique-characters where a fast rejection is really noticeable. I've got a gut feeling that the number of unique-characters is mostly impacting the final string construction after sorting, so lets try without multi-threading the new string construction:
+> It's glorious, even with my [low-tier laptop CPU](#hardware-info) that only has 12 threads, multi-threading overtakes single threading really quickly, especially on an array with fewer unique-characters where a fast rejection is really noticeable. I've got a gut feeling that the number of unique-characters is mostly impacting the final string construction after sorting, so lets try without multi-threading the new string construction:
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <img class="chart" data-name="150k_algos_4_5_with_2_chars" />  
@@ -260,7 +257,6 @@ make new string by adding elements to specific indexes without overlap in thread
 <img class="chart" data-name="150k_algos_4_5_with_500_chars" />  
 <br>
 <img class="chart" data-name="150k_algos_4_5_with_10k_chars" />  
-<br>
 
 A **huge** performance gain, but I want more. Right now I can run `1M length string ~ 0.007s` and `1B length string ~ 5s`, I want to get
 
@@ -313,7 +309,6 @@ My laptop is weak-sauce, so lets ask Friend 0 with an [actual PC](#hardware-info
 | 1B     | 2            | ~1.1s     | ~3.1s     |
 | 1B     | 255          | ~1.7s     | ~3.4s     |
 
-
 Y'know what? That's close enough for me so I'll call it here.
 
 ### Final Thoughts:
@@ -322,13 +317,12 @@ My solution during the interview wasn't the best, nor was it the same as what th
 
 To the interviewers out there: don't be like that guy please, we're tired and jobless.
 
-To fellow interiewees: GL, its rough out there (2025-04-29).
+To fellow interiewees: GL, its rough out there [2025-04-29].
 
 To finish things off here are all the different algos I've worked on going up to 1B characters on [my laptop](#hardware-info):
 
 <button id="themeToggle" onclick="toggleTheme()">Darkmode/Lightmode(ew)</button>  
 <img class="chart" data-name="summary" />  
-<br>
 
 > The Simple Array is so slow that it couldn't finish 1m characters within a few minutes so I just put dummy data to show that its slow AF. It's cool to see that while the benefits of multithreading are clear when it comes to counting unique elements (which speeds up rejection path), construction of the output array is slower, suggesting that the overhead just isn't worth it (or I coded it up wrong lol)
 
